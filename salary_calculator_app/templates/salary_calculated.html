@@ -1,0 +1,238 @@
+<!--=============================================
+#
+# Copyright 2012 David Racca and Matias Molina.
+#
+# This file is part of ADIUC Salary Calculator.
+#
+# ADIUC Salary Calculator is free software: you can redistribute it and/or 
+# modify it under the terms of the GNU General Public License as published 
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# ADIUC Salary Calculator is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ADIUC Salary Calculator.  If not, see 
+# <http://www.gnu.org/licenses/>.
+#
+==============================================-->
+
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es-es" lang="es-es" dir="ltr">
+
+	<head>
+		<title>C&aacute;lculo Salarial</title>
+    	<link rel="stylesheet" href="{% get_static_prefix %}css/style.css" type="text/css" />
+	</head>
+
+	<body>
+	<div align=center>
+	{% if error_msg %}
+	    <div class="errorbox">{{ error_msg }}</div>
+	{% else %}
+			<div class = "title">
+			    C&aacute;lculo salarial para el periodo: {{ fecha.month }} / {{ fecha.year }}
+			</div>
+
+            <br>
+            
+            <div class="results_cargo">
+                {% if afamiliar_list or rem_fijas_persona or rem_porc_persona or ret_fijas_persona or ret_porc_persona %}
+                <table class="result" cellspaing=2><br>
+    
+                    <div class="title_importes"><b>Importes por Persona:</b></div>
+                    <tr>
+                        <th> C&oacute;digo </th>
+                        <th> Detalle </th>
+                        <th> Importe (+) </th>
+                        <th> Importe (-) </th>
+                    </tr>
+
+                    {% for afamiliar in afamiliares_list %}
+                        <tr>
+                        <td>  </td>
+                        <td> Asignaci&oacute;n Familiar ({{ afamiliar.concepto }})</td>
+                        <td class="adicionales"> {{ afamiliar.valor|floatformat:-2 }} </td>
+                        <td></td>
+                        </tr>
+                    {% endfor %}
+                    
+                    {% for rem,importe in rem_fijas_persona %}
+                        <tr>
+                        <td> {{ rem.remuneracion.codigo }} </td>
+                        <td> {{ rem.remuneracion.nombre }} </td>
+                        <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
+                        <td></td>
+                        </tr>
+                    {% endfor %}
+                    
+                    {% for rem,importe in rem_porc_persona %}
+                        <tr>
+                        <td> {{ rem.remuneracion.codigo }} </td>
+                        <td> {{ rem.remuneracion.nombre }} ({{ rem.porcentaje }}%) </td>
+                        <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
+                        <td></td>
+                        </tr>
+                    {% endfor %}
+
+                    {% for ret,importe in ret_fijas_persona %}
+                        <tr>
+                        {% if ret.retencion.codigo == '42/0' %}
+                            <td class="estimativo"> {{ ret.retencion.codigo }} </td>
+                            <td class="estimativo"> {{ ret.retencion.nombre }}<sup>(1)</sup> </td>
+                        {% else %}
+                            <td> {{ ret.retencion.codigo }} </td>
+                            <td> {{ ret.retencion.nombre }} </td>
+                        {% endif %}
+                        <td>  </td>
+                        <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
+                        </tr>
+                    {% endfor %}
+                    
+                    {% for ret,importe in ret_porc_persona %}
+                        <tr>
+                        <td> {{ ret.retencion.codigo }} </td>
+                        <td> {{ ret.retencion.nombre }} ({{ ret.porcentaje }}%) </td>
+                        <td></td>
+                        <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
+                        </tr>
+                    {% endfor %}
+                    
+                    
+                </table>
+                {% endif %}
+               <hr>     
+
+                <div class="title_importes"><b>Cargos:</b></div>
+                {% for res in lista_res %}
+                <table>
+                    <tr>
+                        <td> Cargo: </td>
+                        <td>{{ res.cargo.denominacion }} {% if res.cargo.dedicacion %}, {{ res.cargo.get_dedicacion_display }}{% endif %}</td>
+                    </tr>
+                    <tr> <td> C&oacute;digo LU: </td> <td> {{ res.cargo.lu }} </td> </tr>
+                    <tr> <td> C&oacute;digo PAMPA: </td> <td> {{ res.cargo.pampa }} </td> </tr>
+                </table>
+                <table class="result" cellspaing=2><br>
+                    <tr>
+                        <th> C&oacute;digo </th>
+                        <th> Detalle </th>
+                        <th> Importe (+) </th>
+                        <th> Importe (-) </th>
+                    </tr>
+                    <tr>
+                        <td> 01/0 </td>
+                        <td> Sueldo B&aacute;sico</td>
+                        <td class="adicionales"> {% if res.cargo.pago_por_hora %} {{ res.basico_horas|floatformat:-2 }} {% else %} {{ res.basico|floatformat:-2 }} {% endif %} </td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>{{ res.antiguedad.remuneracion.codigo }}</td>
+                        <td> {{ res.antiguedad.remuneracion.nombre }} ({{res.antiguedad.anio}} años - {{ res.antiguedad.porcentaje }}%)</td>
+                        <td class="adicionales">{{ res.antiguedad_importe|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>
+
+                    <!--<tr class="bold">
+                        <td></td>
+                        <td>Salario Bruto:</td>
+                        <td>{{ res.salario_bruto|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>-->
+
+                    {% for obj, importe in res.remuneraciones %}
+						<tr>
+                            <td> {{ obj.remuneracion.codigo }} </td>
+                            <td> {{ obj.remuneracion.nombre }} {% if obj.porcentaje %}({{ obj.porcentaje }}%){% endif %} </td>
+                            <td class="adicionales">{{ importe|floatformat:-2 }} </td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+
+                    {% for obj, importe in res.retenciones %}
+                     <tr>
+                        <td> {{ obj.retencion.codigo }} </td>
+                        <td> {{ obj.retencion.nombre }} {% if obj.porcentaje %}(-{{ obj.porcentaje }}%){% endif %} </td>
+                        <td></td>
+                        <td class="descuentos">{{ importe|floatformat:-2 }}</td>
+                    </tr>
+                    {% endfor %}
+                    
+                    {% if res.daspu %}
+                    <tr>
+                        <td> {{ res.daspu.retencion.retencion.codigo }} </td>
+                        <td> {{ res.daspu.retencion.retencion.nombre }}
+                            ({{res.daspu.retencion.porcentaje}}% 
+                            {% if res.daspu_extra %} + {{ res.daspu_extra|floatformat:-2 }} extra por m&iacute;nimo {% endif %})
+                        </td>
+                        <td>  </td>
+                        <td class="descuentos"> {{ res.daspu_importe|floatformat:-2 }} </td>
+                    </tr>
+                    {% endif %}
+
+                    <tr class="bold">
+                        <td></td>
+                        <td> Remunerativo: </td>
+                        <td class="adicionales"> {{ res.remunerativo|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>
+                    <tr class="bold">
+                        <td></td>
+                        <td> No Remunerativo: </td>
+                        <td class="adicionales"> {{ res.no_remunerativo|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>
+                    <tr class="bold">
+                        <td></td>
+                        <td> Descuentos: </td>
+                        <td></td>
+                        <td class="descuentos"> {{ res.descuentos|floatformat:-2 }} </td>
+                    </tr>
+                    <tr class="bold">
+                        <td></td>
+                        <td> Salario Neto: </td>
+                        <td> {{ res.salario_neto|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>
+                </table>
+                {% endfor %}
+
+            </div>
+
+            <div class="totales bold">
+                <table id="table_totales">
+                    <tr>
+                        <td> Total Remunerativo: </td>
+                        <td > <font color="#00bb00"> {{ total_rem|floatformat:-2 }} </td>
+                    </tr>
+                    <tr>
+                        <td> Total No Remunrativo: </td>
+                        <td> <font color="#00bb00"> {{ total_no_rem|floatformat:-2 }} </td>
+                    </tr>
+                    <tr>
+                        <td> Total Descuentos: </td>
+                        <td> <font color="#660000"> {{ total_ret|floatformat:-2 }} </fonts></td>
+                    </tr>
+                    <tr>
+                        <td> Total Neto: </td>
+                        <td> {{ total_neto|floatformat:-2 }} </td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <br><br>        
+	{% endif %} <!-- error_msg -->
+        <a class="agregar_quitar"href="javascript: history.go(-1)"> Volver</a>
+
+	</div>
+
+	</body>
+
+</html>

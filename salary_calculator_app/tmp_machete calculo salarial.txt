@@ -1,0 +1,51 @@
+Cómo calcular?
+··············
+
+    Caso Septiembre 2011:
+        datos usados: SEPbasico_nac
+        =>
+        BrutoSep11: SEPbasico_nac + antiguedad%
+        NetoSep11: = BasNetSep11 + antiguedad%
+                
+              DONDE, BasNetSep11 = SEPbasico_nac - (Jubilacion + Ley + Obra Social)%
+                                                            13       3        3
+        
+    Caso Marzo 2012:
+        datos usados: SEPbasico_nac, aumento2003, SEPbasico_unc, aumentoMar
+                        ^                ^                 ^             ^ 
+                        tabla sep 11     8%, tabla sep11   tabla sep11   12%  
+        
+        BrutoMar = SalBasMar + antiguedad%
+                    
+                    donde SalBasMar = aumento2003 + SEPbasico_unc + acum
+                            
+                            donde acum = SEPbasico_nac * aumentoMAR
+        
+        NetoMar = NetoSep11 + (NetoSep11*aumentoMAR)
+        
+    Caso Junio 2012
+    idem al anterior cambiando aumentoMAR por aumentoJUN, con aumentoJUN=18% ;)
+ 
+ ::::::::::::::::::::::::::::::::::::
+ 
+ En cualquier caso, sumar 5% o 15% s hay master o doctorado respectivamente.
+ En caso de haber dos, solo se toma el doctorado.
+ 
+ ::::::::::::::::::::::::::::::::::::
+ 
+ Sobre las garantías salariales.
+     En algunos casos no puede dar como resultado un valor mas   pequeño que el de la garantía.
+     En tal caso, el cálculo devuelve el valor de la garantía.
+     ¿Cuáles son esos casos?
+        o Septiembre 2011:    "aux. ex"  con hasta 5 años de antiguedad (0,1,2, 5)
+                            "aux se"
+        o Marzo y Junio 2012:         "jtp ex" y "jtp se" con hasta 5 años de antiguedad
+                                      "aux ex", "aux se", "aux sim" con hasta 10 años (0,1,2,5,7, 10)
+                            
+::::::::::::::::::::::::::::::::::::
+De qué me olvido? 
+ 
+ 
+ 
+ 
+ 

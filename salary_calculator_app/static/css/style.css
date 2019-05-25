@@ -1,0 +1,207 @@
+/*=============================================
+#
+# Copyright 2012 David Racca and Matias Molina.
+#
+# This file is part of ADIUC Salary Calculator.
+#
+# ADIUC Salary Calculator is free software: you can redistribute it and/or 
+# modify it under the terms of the GNU General Public License as published 
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# ADIUC Salary Calculator is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ADIUC Salary Calculator.  If not, see 
+# <http://www.gnu.org/licenses/>.
+#
+==============================================*/
+
+.afamiliares_form{
+    width:auto;
+}
+
+.white{
+    color: #FFFFFF;
+}
+
+.title_importes{
+    background-color:#939DAC;
+}
+
+div.form_content {
+	width:350px;
+    margin: 0px;
+    background-color: #cdd9de;
+    padding:0px;
+    font-family: "Arial";
+}
+
+form.univ_preuniv_form {
+    width: 660px; /*1cm == 37 pixels*/
+    height: auto;
+    margin: auto;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background-color: #004b6a;
+}
+
+div.common_form {
+    background-color: #ededed;
+    /*color: #FFFFFF;*/
+    text-align: left;
+    font-family: "Arial";
+    margin: 10px;
+    padding: 4px;
+}
+
+table.common_form {
+    margin: auto;
+    padding: 8px 0px 6px 0px;
+}
+
+div.form_cargo {
+    background-color: #ededed;
+    height: auto;
+    margin: 0px;
+    font-family: "Arial";
+}
+
+td.form_cargo_label {
+    width: 83px;
+}
+
+a.agregar_quitar {
+    color: blue;
+    font-size: small;
+}
+
+legend {
+    font-family: "Times New Roman";
+    font-size: 18px;
+    color: #004b6a;
+}
+
+#errorbox{
+    width:400px;
+    background-color:#FA8072;
+    font-size:11pt;
+}
+
+#submit {
+	width:860px;
+    margin: 0px;
+    font-size: 7pt;
+    text-align: center;
+}
+
+#calculate{
+    color: #000000;
+    font-size: 17px;
+    font-weight: bold;
+	width: 640px;
+    height: 30px; 
+    margin: 0px 10px 5px 10px;
+    background-color: #B2B2B2;
+}
+
+#calculate:hover {
+    color: #000000;
+    background-color: #D1D1D1;
+}
+
+.centeralign {
+    text-align: center;
+}
+
+.rightalign {
+    text-align: right;  
+}
+
+div.totales{
+    background-color: #004B6A;
+    text-align: left;
+    font-family: "Arial";
+    color: white;
+    width:550px;
+    font-family: "Arial";
+}
+
+#table_totales {
+    width:550px;
+}
+
+table.result {
+    margin:0px;
+    padding:0px;
+    width:550px;
+    background-color: #cdcdcd;
+    font-family: "Arial";
+}
+
+table.result td{
+    background-color: #ededed;
+}
+
+td.descuentos{
+    color:#550000;
+}
+
+td.adicionales {
+    color:#005500;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+div.title {
+    background-color: #004b6a;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: "Arial";
+    width:550px;
+}
+
+#forms_table {
+	width: 663px;
+	margin: 0px;
+    padding:0px;
+}
+
+div.results_cargo {
+    background-color: #cdcdcd;
+    width:550px;
+    text-align:left;
+    font-family:"Arial";
+}
+
+tr.dark{
+    background-color: #ededed;
+}
+hr{
+	border: 1px #ededed dotted;
+}
+
+tr.error{
+    background-color: #E00000 ;
+    color: yellow;
+    font-size:small;
+    padding: 0px;
+    margin: 0px;
+}
+
+td.estimativo{
+    color: red;
+}
+
+div.referencias {
+    margin-top: 15px;
+    font-family: arial;
+    font-size: 10pt;
+    width: 550px;
+    text-align: left;
+}

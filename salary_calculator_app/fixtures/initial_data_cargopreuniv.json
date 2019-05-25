@@ -1,0 +1,551 @@
+[
+{
+        "pk": 1,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 2,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 3,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 4,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 36.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 5,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 36.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 6,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 7,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 18.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 8,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 35.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 9,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 12.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 10,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 35.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 11,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 12,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 21.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 13,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 35.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 15,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 16,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 35.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 17,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 35.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 18,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 19,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 21.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 20,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 21,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 21.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 22,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 17.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 23,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 18.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 24,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 25,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 21.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 26,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 27,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 28,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 29,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 1.0,
+            "tipo_horas": "C",
+            "pago_por_hora": true
+        }
+    },
+    {
+        "pk": 30,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 1.0,
+            "tipo_horas": "C",
+            "pago_por_hora": true
+        }
+    },
+    {
+        "pk": 31,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 12.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 32,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 12.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 34,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 35,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 36,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 0.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 37,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 15.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 38,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 30.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 39,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 24.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 40,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 18.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 33,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 12.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 14,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 41,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 25.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 61,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 10.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 42,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 43,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 44,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 45,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 46,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 27.3,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 47,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 48,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 49,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 50,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 51,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 27.3,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 52,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 53,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 27.3,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 54,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 55,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 15.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 56,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 57,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 45.0,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 58,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 27.3,
+            "tipo_horas": "R",
+            "pago_por_hora": false
+        }
+    },
+    {
+        "pk": 60,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 0.0,
+            "tipo_horas": "C",
+            "pago_por_hora": true
+        }
+    },
+    {
+        "pk": 59,
+        "model": "salary_calculator_app.cargopreuniversitario",
+        "fields": {
+            "horas": 12.0,
+            "tipo_horas": "C",
+            "pago_por_hora": false
+        }
+    }
+]

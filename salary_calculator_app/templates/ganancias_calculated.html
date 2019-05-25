@@ -1,0 +1,168 @@
+<!--=============================================
+#
+# Copyright 2012 David Racca and Matias Molina.
+#
+# This file is part of ADIUC Salary Calculator.
+#
+# ADIUC Salary Calculator is free software: you can redistribute it and/or 
+# modify it under the terms of the GNU General Public License as published 
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# ADIUC Salary Calculator is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ADIUC Salary Calculator.  If not, see 
+# <http://www.gnu.org/licenses/>.
+#
+==============================================-->
+
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es-es" lang="es-es" dir="ltr">
+
+	<head>
+		<title>C&aacute;lculo ganancias ADIUC</title>
+    	<link rel="stylesheet" href="{% get_static_prefix %}css/style.css" type="text/css" />
+	</head>
+
+	<body>
+	<div align=center>
+	{% if error_msg %}
+	    <div class="errorbox">{{ error_msg }}</div>
+	{% else %}
+			<div class = "title">
+			    C&aacute;lculo ganancias para el a&ntilde;o: {{ anio }}
+			</div>
+
+            <br>
+            
+            <div class="results_cargo">
+                <div class="title_importes"><b>Cargos:</b></div>
+                <table>
+                    <tr>
+                        <td> Cargo: </td>
+                        <td>{{ cargo.denominacion }} {% if cargo.dedicacion %}, {{ cargo.get_dedicacion_display }}{% endif %}</td>
+                    </tr>
+                    <tr> <td> C&oacute;digo LU: </td> <td> {{ cargo.lu }} </td> </tr>
+                    <tr> <td> C&oacute;digo PAMPA: </td> <td> {{ cargo.pampa }} </td> </tr>
+                </table>
+                <table class="result" cellspacing=2><br>
+                    <tr>
+                        <th> Detalle </th>
+                        <th> Importe (+) </th>
+                        <th> Importe (-) </th>
+                    </tr>
+                    <tr>
+                        <td> Ingreso neto anual</td>
+                        <td class="adicionales"> {{ neto_anual|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>
+
+                    {% for deduc, importe in lista_deduc %}
+                    <tr>
+                        <td> {{ deduc }} </td>
+                        <td></td>
+                        <td class="descuentos">{{ importe }}</td>
+                    </tr>
+                    {% endfor %}
+                    <!--{% for obj, importe in res.remuneraciones %}
+						<tr>
+                            <td> {{ obj.remuneracion.codigo }} </td>
+                            <td> {{ obj.remuneracion.nombre }} {% if obj.porcentaje %}({{ obj.porcentaje }}%){% endif %} </td>
+                            <td class="adicionales">{{ importe|floatformat:-2 }} </td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+
+                    {% for obj, importe in res.retenciones %}
+                     <tr>
+                        <td> {{ obj.retencion.codigo }} </td>
+                        <td> {{ obj.retencion.nombre }} {% if obj.porcentaje %}(-{{ obj.porcentaje }}%){% endif %} </td>
+                        <td></td>
+                        <td class="descuentos">{{ importe|floatformat:-2 }}</td>
+                    </tr>
+                    {% endfor %}
+                    
+                    {% if res.daspu %}
+                    <tr>
+                        <td> {{ res.daspu.retencion.retencion.codigo }} </td>
+                        <td> {{ res.daspu.retencion.retencion.nombre }}
+                            ({{res.daspu.retencion.porcentaje}}% 
+                            {% if res.daspu_extra %} + {{ res.daspu_extra|floatformat:-2 }} extra por m&iacute;nimo {% endif %})
+                        </td>
+                        <td>  </td>
+                        <td class="descuentos"> {{ res.daspu_importe|floatformat:-2 }} </td>
+                    </tr>
+                    {% endif %}
+
+                    <tr class="bold">
+                        <td></td>
+                        <td> Remunerativo: </td>
+                        <td class="adicionales"> {{ res.remunerativo|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>
+                    <tr class="bold">
+                        <td></td>
+                        <td> No Remunerativo: </td>
+                        <td class="adicionales"> {{ res.no_remunerativo|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>
+                    <tr class="bold">
+                        <td></td>
+                        <td> Descuentos: </td>
+                        <td></td>
+                        <td class="descuentos"> {{ res.descuentos|floatformat:-2 }} </td>
+                    </tr>
+                    <tr class="bold">
+                        <td></td>
+                        <td> Salario Neto: </td>
+                        <td> {{ res.salario_neto|floatformat:-2 }} </td>
+                        <td></td>
+                    </tr>-->
+                </table>
+
+            </div>
+
+            <div class="totales bold">
+                <table id="table_totales">
+                    <tr>
+                        <td> Ingreso neto anual: </td>
+                        <td > <font color="#00bb00"> {{ neto_anual|floatformat:-2 }} </font></td>
+                    </tr>
+                    <tr>
+                        <td> Total deducciones: </td>
+                        <td> <font color="##660000"> {{ total_deduc|floatformat:-2 }} </td>
+                    </tr>
+                    <tr>
+                        <td> Ingreso neto sujeto a impuestos: </td>
+                        <td> {{ insai|floatformat:-2 }} </td>
+                    </tr>
+                    <tr>
+                        <td> Impuesto a las ganancias anual: </td>
+                        <td> {{ impuesto|floatformat:-2 }} </td>
+                    </tr>
+                    <tr>
+                        <td> Promedio mensual (/13): </td>
+                        <td> {{ mensual|floatformat:-2 }} </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="referencias">
+                <sup>(1)</sup> C&aacute;lculo estimativo.
+            </div>
+
+            <br><br>        
+	{% endif %} <!-- error_msg -->
+        <a class="agregar_quitar" href="javascript: history.go(-1)"> Volver</a>
+
+	</div>
+
+	</body>
+
+</html>

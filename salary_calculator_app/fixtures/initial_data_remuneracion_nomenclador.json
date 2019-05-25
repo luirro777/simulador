@@ -1,0 +1,114 @@
+[
+{
+        "pk": 63,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 74
+        }
+    },
+    {
+        "pk": 68,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 75
+        }
+    },
+    {
+        "pk": 73,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 76
+        }
+    },
+    {
+        "pk": 74,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 77
+        }
+    },
+    {
+        "pk": 62,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 71
+        }
+    },
+    {
+        "pk": 67,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 72
+        }
+    },
+    {
+        "pk": 72,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 73
+        }
+    },
+    {
+        "pk": 61,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 68
+        }
+    },
+    {
+        "pk": 66,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 69
+        }
+    },
+    {
+        "pk": 71,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 70
+        }
+    },
+    {
+        "pk": 60,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 65
+        }
+    },
+    {
+        "pk": 65,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 66
+        }
+    },
+    {
+        "pk": 70,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 67
+        }
+    },
+    {
+        "pk": 59,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 62
+        }
+    },
+    {
+        "pk": 64,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 63
+        }
+    },
+    {
+        "pk": 69,
+        "model": "salary_calculator_app.remuneracionnomenclador",
+        "fields": {
+            "cargo": 64
+        }
+    }
+]

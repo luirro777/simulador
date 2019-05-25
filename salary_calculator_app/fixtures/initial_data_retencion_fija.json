@@ -1,0 +1,92 @@
+[
+{
+        "pk": 11,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 12,
+            "vigencia": 1,
+            "valor": 3.8
+        }
+    },
+    {
+        "pk": 1,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 7,
+            "vigencia": 1,
+            "valor": 7.0
+        }
+    },
+    {
+        "pk": 3,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 9,
+            "vigencia": 1,
+            "valor": 7.0
+        }
+    },
+    {
+        "pk": 2,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 8,
+            "vigencia": 1,
+            "valor": 7.0
+        }
+    },
+    {
+        "pk": 5,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 8,
+            "vigencia": 1,
+            "valor": 13.0
+        }
+    },
+    {
+        "pk": 6,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 8,
+            "vigencia": 1,
+            "valor": 25.0
+        }
+    },
+    {
+        "pk": 7,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 8,
+            "vigencia": 1,
+            "valor": 34.0
+        }
+    },
+    {
+        "pk": 8,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 8,
+            "vigencia": 1,
+            "valor": 40.0
+        }
+    },
+    {
+        "pk": 9,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 8,
+            "vigencia": 1,
+            "valor": 47.0
+        }
+    },
+    {
+        "pk": 10,
+        "model": "salary_calculator_app.retencionfija",
+        "fields": {
+            "retencion": 8,
+            "vigencia": 1,
+            "valor": 55.0
+        }
+    }
+]

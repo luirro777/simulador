@@ -1,0 +1,56 @@
+[
+	{
+        "pk": 2,
+        "model": "salary_calculator_app.retencionporcentual",
+        "fields": {
+            "retencion": 2,
+            "vigencia": 1,
+            "porcentaje": 2.0
+        }
+    },
+    {
+        "pk": 3,
+        "model": "salary_calculator_app.retencionporcentual",
+        "fields": {
+            "retencion": 3,
+            "vigencia": 1,
+            "porcentaje": 11.0
+        }
+    },
+    {
+        "pk": 4,
+        "model": "salary_calculator_app.retencionporcentual",
+        "fields": {
+            "retencion": 4,
+            "vigencia": 1,
+            "porcentaje": 4.5
+        }
+    },
+    {
+        "pk": 5,
+        "model": "salary_calculator_app.retencionporcentual",
+        "fields": {
+            "retencion": 5,
+            "vigencia": 1,
+            "porcentaje": 3.0
+        }
+    },
+    {
+        "pk": 1,
+        "model": "salary_calculator_app.retencionporcentual",
+        "fields": {
+            "retencion": 1,
+            "vigencia": 1,
+            "porcentaje": 3.0
+        }
+    },
+    {
+        "pk": 6,
+        "model": "salary_calculator_app.retencionporcentual",
+        "fields": {
+            "retencion": 6,
+            "vigencia": 1,
+            "porcentaje": 1.5
+        }
+    }
+]

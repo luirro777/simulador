@@ -1,0 +1,429 @@
+[
+    {
+        "pk": 45,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 1
+        }
+    },
+    {
+        "pk": 47,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 2
+        }
+    },
+    {
+        "pk": 70,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 3
+        }
+    },
+    {
+        "pk": 57,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 4
+        }
+    },
+    {
+        "pk": 51,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 5
+        }
+    },
+    {
+        "pk": 68,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 6
+        }
+    },
+    {
+        "pk": 41,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 7
+        }
+    },
+    {
+        "pk": 73,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 8
+        }
+    },
+    {
+        "pk": 65,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 9
+        }
+    },
+    {
+        "pk": 74,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 10
+        }
+    },
+    {
+        "pk": 43,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 11
+        }
+    },
+    {
+        "pk": 75,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 12
+        }
+    },
+    {
+        "pk": 76,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 13
+        }
+    },
+    {
+        "pk": 48,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 15
+        }
+    },
+    {
+        "pk": 77,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 16
+        }
+    },
+    {
+        "pk": 78,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 17
+        }
+    },
+    {
+        "pk": 52,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 18
+        }
+    },
+    {
+        "pk": 79,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 19
+        }
+    },
+    {
+        "pk": 39,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 20
+        }
+    },
+    {
+        "pk": 80,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 21
+        }
+    },
+    {
+        "pk": 81,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 22
+        }
+    },
+    {
+        "pk": 82,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 23
+        }
+    },
+    {
+        "pk": 36,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 24
+        }
+    },
+    {
+        "pk": 83,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 25
+        }
+    },
+    {
+        "pk": 84,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 26
+        }
+    },
+    {
+        "pk": 40,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 27
+        }
+    },
+    {
+        "pk": 33,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 28
+        }
+    },
+    {
+        "pk": 71,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 29
+        }
+    },
+    {
+        "pk": 58,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 30
+        }
+    },
+    {
+        "pk": 56,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 31
+        }
+    },
+    {
+        "pk": 85,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 32
+        }
+    },
+    {
+        "pk": 72,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 34
+        }
+    },
+    {
+        "pk": 53,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 35
+        }
+    },
+    {
+        "pk": 86,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 36
+        }
+    },
+    {
+        "pk": 69,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 37
+        }
+    },
+    {
+        "pk": 60,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 38
+        }
+    },
+    {
+        "pk": 61,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 39
+        }
+    },
+    {
+        "pk": 62,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 40
+        }
+    },
+    {
+        "pk": 59,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 33
+        }
+    },
+    {
+        "pk": 55,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 14
+        }
+    },
+    {
+        "pk": 66,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 41
+        }
+    },
+    {
+        "pk": 42,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 61
+        }
+    },
+    {
+        "pk": 44,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 42
+        }
+    },
+    {
+        "pk": 46,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 43
+        }
+    },
+    {
+        "pk": 87,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 44
+        }
+    },
+    {
+        "pk": 49,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 45
+        }
+    },
+    {
+        "pk": 50,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 46
+        }
+    },
+    {
+        "pk": 54,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 47
+        }
+    },
+    {
+        "pk": 88,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 48
+        }
+    },
+    {
+        "pk": 89,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 49
+        }
+    },
+    {
+        "pk": 90,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 50
+        }
+    },
+    {
+        "pk": 91,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 51
+        }
+    },
+    {
+        "pk": 37,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 52
+        }
+    },
+    {
+        "pk": 38,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 53
+        }
+    },
+    {
+        "pk": 92,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 54
+        }
+    },
+    {
+        "pk": 67,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 55
+        }
+    },
+    {
+        "pk": 93,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 56
+        }
+    },
+    {
+        "pk": 34,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 57
+        }
+    },
+    {
+        "pk": 35,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 58
+        }
+    },
+    {
+        "pk": 64,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 60
+        }
+    },
+    {
+        "pk": 63,
+        "model": "salary_calculator_app.salariobasicopreuniv",
+        "fields": {
+            "cargo": 59
+        }
+    }
+]

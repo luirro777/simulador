@@ -1,0 +1,695 @@
+[
+    {
+        "pk": 5,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 205,
+            "lu": 10,
+            "denominacion": 5
+        }
+    },
+    {
+        "pk": 51,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 310,
+            "lu": 90,
+            "denominacion": 5
+        }
+    },
+    {
+        "pk": 7,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 207,
+            "lu": 12,
+            "denominacion": 7
+        }
+    },
+    {
+        "pk": 41,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 241,
+            "lu": 80,
+            "denominacion": 40
+        }
+    },
+    {
+        "pk": 55,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 314,
+            "lu": 94,
+            "denominacion": 53
+        }
+    },
+    {
+        "pk": 54,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 313,
+            "lu": 93,
+            "denominacion": 52
+        }
+    },
+    {
+        "pk": 9,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 209,
+            "lu": 16,
+            "denominacion": 9
+        }
+    },
+    {
+        "pk": 12,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 212,
+            "lu": 19,
+            "denominacion": 12
+        }
+    },
+    {
+        "pk": 61,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 242,
+            "lu": 99,
+            "denominacion": 59
+        }
+    },
+    {
+        "pk": 25,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 224,
+            "lu": 40,
+            "denominacion": 24
+        }
+    },
+    {
+        "pk": 20,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 219,
+            "lu": 33,
+            "denominacion": 20
+        }
+    },
+    {
+        "pk": 27,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 226,
+            "lu": 42,
+            "denominacion": 26
+        }
+    },
+    {
+        "pk": 56,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 315,
+            "lu": 95,
+            "denominacion": 54
+        }
+    },
+    {
+        "pk": 42,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 301,
+            "lu": 81,
+            "denominacion": 41
+        }
+    },
+    {
+        "pk": 8,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 208,
+            "lu": 15,
+            "denominacion": 8
+        }
+    },
+    {
+        "pk": 13,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 213,
+            "lu": 21,
+            "denominacion": 13
+        }
+    },
+    {
+        "pk": 50,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 309,
+            "lu": 89,
+            "denominacion": 49
+        }
+    },
+    {
+        "pk": 60,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 318,
+            "lu": 98,
+            "denominacion": 58
+        }
+    },
+    {
+        "pk": 59,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 319,
+            "lu": 98,
+            "denominacion": 57
+        }
+    },
+    {
+        "pk": 31,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 230,
+            "lu": 46,
+            "denominacion": 30
+        }
+    },
+    {
+        "pk": 30,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 229,
+            "lu": 45,
+            "denominacion": 29
+        }
+    },
+    {
+        "pk": 29,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 228,
+            "lu": 44,
+            "denominacion": 28
+        }
+    },
+    {
+        "pk": 37,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 235,
+            "lu": 55,
+            "denominacion": 36
+        }
+    },
+    {
+        "pk": 48,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 307,
+            "lu": 87,
+            "denominacion": 47
+        }
+    },
+    {
+        "pk": 34,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 232,
+            "lu": 51,
+            "denominacion": 33
+        }
+    },
+    {
+        "pk": 49,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 308,
+            "lu": 88,
+            "denominacion": 48
+        }
+    },
+    {
+        "pk": 3,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 203,
+            "lu": 3,
+            "denominacion": 3
+        }
+    },
+    {
+        "pk": 6,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 206,
+            "lu": 11,
+            "denominacion": 6
+        }
+    },
+    {
+        "pk": 53,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 312,
+            "lu": 92,
+            "denominacion": 51
+        }
+    },
+    {
+        "pk": 52,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 311,
+            "lu": 91,
+            "denominacion": 50
+        }
+    },
+    {
+        "pk": 24,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 223,
+            "lu": 39,
+            "denominacion": 23
+        }
+    },
+    {
+        "pk": 23,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 222,
+            "lu": 38,
+            "denominacion": 22
+        }
+    },
+    {
+        "pk": 58,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 317,
+            "lu": 97,
+            "denominacion": 56
+        }
+    },
+    {
+        "pk": 57,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 316,
+            "lu": 96,
+            "denominacion": 55
+        }
+    },
+    {
+        "pk": 28,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 227,
+            "lu": 43,
+            "denominacion": 27
+        }
+    },
+    {
+        "pk": 22,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 221,
+            "lu": 37,
+            "denominacion": 21
+        }
+    },
+    {
+        "pk": 19,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 218,
+            "lu": 30,
+            "denominacion": 19
+        }
+    },
+    {
+        "pk": 21,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 220,
+            "lu": 35,
+            "denominacion": 19
+        }
+    },
+    {
+        "pk": 38,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 236,
+            "lu": 57,
+            "denominacion": 37
+        }
+    },
+    {
+        "pk": 39,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 237,
+            "lu": 58,
+            "denominacion": 38
+        }
+    },
+    {
+        "pk": 40,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 238,
+            "lu": 59,
+            "denominacion": 39
+        }
+    },
+    {
+        "pk": 68,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 109,
+            "lu": 7,
+            "denominacion": 62
+        }
+    },
+    {
+        "pk": 69,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 110,
+            "lu": 20,
+            "denominacion": 62
+        }
+    },
+    {
+        "pk": 70,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 111,
+            "lu": 31,
+            "denominacion": 62
+        }
+    },
+    {
+        "pk": 71,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 113,
+            "lu": 9,
+            "denominacion": 63
+        }
+    },
+    {
+        "pk": 72,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 114,
+            "lu": 26,
+            "denominacion": 63
+        }
+    },
+    {
+        "pk": 73,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 115,
+            "lu": 32,
+            "denominacion": 63
+        }
+    },
+    {
+        "pk": 65,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 105,
+            "lu": 6,
+            "denominacion": 61
+        }
+    },
+    {
+        "pk": 66,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 106,
+            "lu": 8,
+            "denominacion": 61
+        }
+    },
+    {
+        "pk": 67,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 107,
+            "lu": 54,
+            "denominacion": 61
+        }
+    },
+    {
+        "pk": 74,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 117,
+            "lu": 14,
+            "denominacion": 64
+        }
+    },
+    {
+        "pk": 75,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 118,
+            "lu": 28,
+            "denominacion": 64
+        }
+    },
+    {
+        "pk": 76,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 119,
+            "lu": 34,
+            "denominacion": 64
+        }
+    },
+    {
+        "pk": 77,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 121,
+            "lu": 36,
+            "denominacion": 65
+        }
+    },
+    {
+        "pk": 33,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 239,
+            "lu": 50,
+            "denominacion": 32
+        }
+    },
+    {
+        "pk": 4,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 204,
+            "lu": 4,
+            "denominacion": 4
+        }
+    },
+    {
+        "pk": 62,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 101,
+            "lu": 5,
+            "denominacion": 60
+        }
+    },
+    {
+        "pk": 63,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 102,
+            "lu": 13,
+            "denominacion": 60
+        }
+    },
+    {
+        "pk": 64,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 103,
+            "lu": 27,
+            "denominacion": 60
+        }
+    },
+    {
+        "pk": 14,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 240,
+            "lu": 22,
+            "denominacion": 14
+        }
+    },
+    {
+        "pk": 36,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 234,
+            "lu": 53,
+            "denominacion": 35
+        }
+    },
+    {
+        "pk": 32,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 231,
+            "lu": 49,
+            "denominacion": 31
+        }
+    },
+    {
+        "pk": 11,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 211,
+            "lu": 18,
+            "denominacion": 11
+        }
+    },
+    {
+        "pk": 2,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 202,
+            "lu": 2,
+            "denominacion": 2
+        }
+    },
+    {
+        "pk": 44,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 303,
+            "lu": 83,
+            "denominacion": 43
+        }
+    },
+    {
+        "pk": 16,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 215,
+            "lu": 24,
+            "denominacion": 16
+        }
+    },
+    {
+        "pk": 15,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 214,
+            "lu": 23,
+            "denominacion": 15
+        }
+    },
+    {
+        "pk": 17,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 216,
+            "lu": 25,
+            "denominacion": 17
+        }
+    },
+    {
+        "pk": 35,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 233,
+            "lu": 52,
+            "denominacion": 34
+        }
+    },
+    {
+        "pk": 18,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 217,
+            "lu": 29,
+            "denominacion": 18
+        }
+    },
+    {
+        "pk": 47,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 306,
+            "lu": 86,
+            "denominacion": 46
+        }
+    },
+    {
+        "pk": 45,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 304,
+            "lu": 84,
+            "denominacion": 44
+        }
+    },
+    {
+        "pk": 46,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 305,
+            "lu": 85,
+            "denominacion": 45
+        }
+    },
+    {
+        "pk": 43,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 302,
+            "lu": 82,
+            "denominacion": 42
+        }
+    },
+    {
+        "pk": 10,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 210,
+            "lu": 17,
+            "denominacion": 10
+        }
+    },
+    {
+        "pk": 1,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 201,
+            "lu": 1,
+            "denominacion": 1
+        }
+    },
+    {
+        "pk": 26,
+        "model": "salary_calculator_app.cargo",
+        "fields": {
+            "pampa": 225,
+            "lu": 41,
+            "denominacion": 25
+        }
+    }
+]

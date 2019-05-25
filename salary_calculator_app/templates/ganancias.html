@@ -1,0 +1,299 @@
+<!--=============================================
+#
+# Copyright 2012 David Racca and Matias Molina.
+#
+# This file is part of ADIUC Salary Calculator.
+#
+# ADIUC Salary Calculator is free software: you can redistribute it and/or 
+# modify it under the terms of the GNU General Public License as published 
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# ADIUC Salary Calculator is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ADIUC Salary Calculator.  If not, see 
+# <http://www.gnu.org/licenses/>.
+#
+==============================================-->
+
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es-es" lang="es-es" dir="ltr">
+
+	<head>
+		<title>C&aacute;lculo ganancias ADIUC</title>
+
+		<link rel="stylesheet" href="{% get_static_prefix %}css/style.css" type="text/css" />
+        <link type="text/css" href="{% get_static_prefix %}css/ui-lightness/jquery-ui-1.8.22.custom.css" rel="stylesheet" />
+
+        <script type="text/javascript" src="{% get_static_prefix %}js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="{% get_static_prefix %}js/jquery-ui-1.8.22.custom.min.js"></script>
+        <script type="text/javascript" src="{% get_static_prefix %}js/jquery.ui.datepicker-es.js"></script>
+        <script type="text/javascript" src="{% get_static_prefix %}js/formset.js"></script>
+        <script type="text/javascript" src="{% get_static_prefix %}js/hide_horas_field.js"></script>
+        <script type="text/javascript" src="{% get_static_prefix %}js/utils.js"></script>
+	</head>
+
+	<body>
+
+		<form action="/ganancias/" method="POST" class="univ_preuniv_form">
+
+            <!--  COMMON FORM -->
+            <div class="common_form">
+                <fieldset class="common_form">
+                    <legend>General</legend>
+                    <table class="common_form">
+                        <tr>
+                            <td> {{ commonform.anio.label_tag }}: </td>
+                            <td> {{ commonform.anio }} </td>
+                        </tr>
+			            {% if commonform.fecha.errors %}
+                        <tr class="error">
+                            <td colspan="2"> {{ commonform.fecha.errors }} </td>
+                        </tr> 
+                        {% endif %}
+                        <tr>
+                            <td> {{ commonform.antiguedad.label_tag }}: </td>
+                            <td> {{ commonform.antiguedad }} </td>
+                        </tr>
+			            {% if commonform.antiguedad.errors %}
+                        <tr class="error">
+                            <td colspan="2"> {{ commonform.antiguedad.errors }} </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td> {{ commonform.master.label_tag }} </td>
+                            <td> {{ commonform.master }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ commonform.doctorado.label_tag }} </td>
+                            <td> {{ commonform.doctorado }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ commonform.afiliado.label_tag }} </td>
+                            <td> {{ commonform.afiliado }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ commonform.caja_compl.label_tag }} </td>
+                            <td> {{ commonform.caja_compl }} </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+            <!--  FIN COMMON FORM -->
+
+            <!--  GANANCIAS FORM -->
+            <div id="gananciasform" class="common_form">
+                <fieldset>
+                    <legend>Impuesto a las Ganancias</legend>
+                    <table class="common_form">
+                        <tr>
+                            <td> {{ gananciasform.estado_civil.label_tag }} </td>
+                            <td> {{ gananciasform.estado_civil }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ gananciasform.conyuge.label_tag }} </td>
+                            <td> {{ gananciasform.conyuge }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ gananciasform.nro_hijos_menores_24.label_tag }} </td>
+                            <td> {{ gananciasform.nro_hijos_menores_24 }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ gananciasform.nro_descendientes.label_tag }} </td>
+                            <td> {{ gananciasform.nro_descendientes }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ gananciasform.nro_ascendientes.label_tag }} </td>
+                            <td> {{ gananciasform.nro_ascendientes }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ gananciasform.nro_suegros_yernos_nueras.label_tag }} </td>
+                            <td> {{ gananciasform.nro_suegros_yernos_nueras }} </td>
+                        </tr>
+                        <tr>
+                            <td> {{ gananciasform.otros_descuentos.label_tag }} </td>
+                            <td> {{ gananciasform.otros_descuentos }} </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+            <!--  FIN GANANCIAS FORM -->
+
+            <!--  UNIV CARGO FORM -->
+			<div class="common_form">
+                <fieldset id="univformset_content">
+                    <legend>Cargos Universitarios</legend>
+
+			        <div class="form_cargo">
+                        {{ univform.non_field_errors }}
+                        <table class="common_form">
+                            <tr>
+                                <td class="form_cargo_label"> {{ univform.cargo.label_tag }}: </td>
+                                <td> {{ univform.cargo }} </td>
+                            </tr>
+                            {% if univform.cargo.errors %}
+                            <tr class="error"> <td colspan="2"> {{ univform.cargo.errors }} </td></tr>
+                            {% endif %}
+                        </table>
+                
+                </fieldset>
+            </div>
+            <!--  UNIV CARGO FORM SET FORM -->
+
+
+
+            <!--  PREUNIV CARGO FORM SET FORM -->
+			<!--<div class="common_form">
+
+                <fieldset id="preunivformset_content">
+                    <legend>Cargos Preuniversitarios</legend>
+
+                    {% for preunivform in preunivformset %}
+                    {{ preunivform.id }}
+
+                    {% if preunivform in preunivformset.deleted_forms or preunivform.DELETE.value == "on" %}
+                    <div class="form_cargo" style="display:none">
+                    {% else %}
+                    <div class="form_cargo">
+                    {% endif %}
+				        <table class="common_form">
+						    <tr>
+                                <td class="form_cargo_label"> {{ preunivform.cargo.label_tag }}: </td>
+     						    <td> {{ preunivform.cargo }} </td>
+                            </tr>
+					        {% if preunivform.cargo.errors %}
+	                        <tr class="error">
+	                            <td colspan="2" > 
+        	                        {% for error in preunivform.cargo.errors %}
+	                                    ^ {{ error }} 
+	                                {% endfor %}
+	                            </td>
+                            </tr>
+                            {% endif %}
+
+						    <tr>
+                                <td class="form_cargo_label"> {{ preunivform.horas.label_tag }}: </td>
+						        <td> {{ preunivform.horas }} </td>
+                            </tr>-->
+                            <!-- El siguiente widget nos dice que cargo es "pago por hora" y cual no -->
+                            <!--<tr style="display:none">
+							    <td> {{ preunivform.pago_por_horas_info }} </td>
+						    </tr>
+
+					        {% if preunivform.horas.errors %}
+	                        <tr class="error" id="{{ preunivform.horas.auto_id }}-errors">
+	                            <td colspan="2" > -->
+        	                        <!--{% for error in preunivform.horas.errors %}
+	                                    ^ {{ error }}
+	                                {% endfor %}-->
+	                            <!--</td>
+                            </tr>
+                            {% endif %}
+					    </table>
+                        <p class="agregar_quitar rightalign">
+                            <a href="javascript:void(0)" onclick="hide_father(this,preunivPrefix);enable_disable(calculateButtonId,univPrefix,preunivPrefix);">
+                                Quitar
+                            </a>
+                        </p>-->
+                        <!-- Necesario para django, marca que forms estan marcados para borrar del formset -->
+                       <!-- <div style="display:none">
+                            {{ preunivform.DELETE }}
+                        </div>
+                    </div>-->
+                    {% endfor %}
+
+                    <!--<p class="centeralign">-->
+                        <!--<a id="nuevo_cargo_pre" class="agregar_quitar centeralign" href="javascript:void(0)"
+                        onclick="show_new_form_HTML('preunivformset_content', preunivDivAttrs,
+                                '<table class=\'common_form\'>\
+                                    <tr> \
+                                        <td class=\'form_cargo_label\'> {{ preunivformset.empty_form.cargo.label_tag|escapejs }}: </td> \
+                                        <td> {{ preunivformset.empty_form.cargo|escapejs }} </td> \
+                                    </tr> \
+                                    <tr> \
+						                <td class=\'form_cargo_label\'> {{ preunivformset.empty_form.horas.label_tag|escapejs }}: </td> \
+                                        <td> {{ preunivformset.empty_form.horas|escapejs }} </td> \
+                                    </tr> \
+                                    <tr>\
+							            <td> {{ preunivformset.empty_form.pago_por_horas_info|escapejs }} </td>\
+						            </tr>\
+					            </table>\
+                                <p class=\'agregar_quitar rightalign\'><a href=\'javascript:void(0)\' onclick=\'hide_father(this, preunivPrefix);enable_disable(calculateButtonId,univPrefix,preunivPrefix);\'>Quitar</a></p>\
+                                <div style=\'display:none\'>\
+                                    {{ preunivformset.empty_form.DELETE|escapejs }}\
+                                </div>',
+                            preunivPrefix, 'nuevo_cargo_pre');
+                    enable_disable(calculateButtonId,univPrefix,preunivPrefix);
+                    initial_show_horas(preunivPrefix)">A&ntilde;adir
+                        </a>-->
+                    <!--</p>-->
+            
+                <!--</fieldset>
+            </div>-->
+            <!--  PREUNIV CARGO FORM SET FORM -->
+
+
+
+            <!-- SUBMIT BUTTON -->
+            <input id="calculate" type="submit" value="Calcular"/>
+            <!-- FIN SUBMIT BUTTON -->
+
+
+
+		</form>
+
+
+        <!-- Script para setear valores iniciales de variables luego de cargar el body -->
+        <script type="text/javascript">
+            univPrefix = "univcargo";
+            preunivPrefix = "preunivcargo";
+            univDivAttrs = {};
+            univDivAttrs['class'] = 'form_cargo height_fix';
+            preunivDivAttrs = {};
+            preunivDivAttrs['class'] = 'form_cargo';
+            formset_init(univPrefix, "univformset_content", "form_cargo");
+            formset_init(preunivPrefix, "preunivformset_content", "form_cargo");
+            calculateButtonId = "calculate";
+            enable_disable(calculateButtonId, univPrefix, preunivPrefix);
+
+            $(document).ready(function() {
+                
+                $('form').keypress(function(e){    
+                    if(e == 13) return false;
+                }); 
+
+                $('input').keypress(function(e){ 
+                    if(e.which == 13) return false;
+                });
+
+                // general form
+                var today = new Date();
+                var date = ((today.getMonth()+1 < 10) ? "0" : "") + (today.getMonth()+1) + "/" + today.getFullYear();
+                $("input#id_fecha").val(date);
+                $("select#id_cant_hijos").val("0");
+                $("select#id_antiguedad").val("0");
+                $("input#id_master")[0].checked = false;
+                $("input#id_doctorado")[0].checked = false;
+                $("input#id_afiliado")[0].checked = false;
+                $("input#id_daspu")[0].checked = false;
+
+                // Impuesto ganancias form
+                $("select#id_estado_civil").val("1");
+                $("select#id_conyuge").val("2");
+                $("select#id_nro_hijos_menores_24").val("0");
+                $("select#id_nro_descendientes").val("0");
+                $("select#id_nro_ascendientes").val("0");
+                $("select#id_nro_suegros_yernos_nueras").val("0");
+
+            });
+        </script>
+
+	</body>
+
+</html>

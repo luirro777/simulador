@@ -1,0 +1,177 @@
+[
+{
+        "pk": 17,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 0
+        }
+    },
+    {
+        "pk": 18,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 1
+        }
+    },
+    {
+        "pk": 19,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 2
+        }
+    },
+    {
+        "pk": 53,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 3
+        }
+    },
+    {
+        "pk": 54,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 4
+        }
+    },
+    {
+        "pk": 20,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 5
+        }
+    },
+    {
+        "pk": 52,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 6
+        }
+    },
+    {
+        "pk": 21,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 7
+        }
+    },
+    {
+        "pk": 50,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 8
+        }
+    },
+    {
+        "pk": 51,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 9
+        }
+    },
+    {
+        "pk": 22,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 10
+        }
+    },
+    {
+        "pk": 49,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 11
+        }
+    },
+    {
+        "pk": 23,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 12
+        }
+    },
+    {
+        "pk": 47,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 13
+        }
+    },
+    {
+        "pk": 48,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 14
+        }
+    },
+    {
+        "pk": 24,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 15
+        }
+    },
+    {
+        "pk": 46,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 16
+        }
+    },
+    {
+        "pk": 25,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 17
+        }
+    },
+    {
+        "pk": 44,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 18
+        }
+    },
+    {
+        "pk": 45,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 19
+        }
+    },
+    {
+        "pk": 26,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 20
+        }
+    },
+    {
+        "pk": 43,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 21
+        }
+    },
+    {
+        "pk": 27,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 22
+        }
+    },
+    {
+        "pk": 42,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 23
+        }
+    },
+    {
+        "pk": 28,
+        "model": "salary_calculator_app.antiguedadpreuniversitaria",
+        "fields": {
+            "anio": 24
+        }
+    }
+]
