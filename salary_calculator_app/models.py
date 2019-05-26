@@ -62,11 +62,11 @@ class Cargo(models.Model):
 class RetencionPorcentual(models.Model):
     """Retencion porcentual de descuento sobre el total remunerativo de la persona."""
 
-    ref  = models.CharField(u'Referencia', max_length=10,
-        help_text=u'Referencia interna o descripción corta')
+    ref  = models.CharField(u'Referencia', max_length=30,
+        help_text=u'Referencia interna')
     codigo = models.CharField(u'Código', max_length=5,
         help_text=u'Código de la retención')
-    nombre  = models.CharField(u'Nombre', max_length=50,
+    nombre  = models.CharField(u'Nombre', max_length=30,
         help_text=u'Nombre de la retención')
     porcentaje = models.FloatField(u'Porcentaje de Descuento', validators=[validate_isgezero],
         help_text=u'El porcentaje del descuento. Ingresar un valor positivo.')
@@ -80,7 +80,7 @@ class RetencionPorcentual(models.Model):
         ordering = ['codigo', 'nombre', 'desde', 'hasta']
 
     def __unicode__(self):
-        return self.ref + u" " + '(' + unicode(self.desde.strftime("%m/%y")) + '-' + unicode(self.hasta.strftime("%m/%y")) + ')'
+        return unicode(self.ref) 
 
 
 #class RetencionDaspu(models.Model):
@@ -103,11 +103,11 @@ class RetencionPorcentual(models.Model):
 class RetencionFija(models.Model):
     """Retencion fija que debe realizarse a la persona."""
 
-    ref  = models.CharField(u'Referencia', max_length=10,
+    ref  = models.CharField(u'Referencia', max_length=30,
         help_text=u'Referencia interna o descripción corta')
     codigo = models.CharField(u'Código', max_length=5,
         help_text=u'El código de la retencion tal cual figura en la lista de la web de ADIUC.')
-    nombre  = models.CharField(u'Nombre', max_length=50,
+    nombre  = models.CharField(u'Nombre', max_length=30,
         help_text=u'El nombre de la retencion tal cual figura en la lista de la web de ADIUC.')
     valor = models.FloatField(u'Valor de Descuento', validators=[validate_isgezero],
         help_text=u'El valor fijo que debe descontarse.')
@@ -120,7 +120,7 @@ class RetencionFija(models.Model):
         ordering = ['codigo', 'nombre', 'desde', 'hasta']
 
     def __unicode__(self):
-        return self.ref + u" " + '(' + unicode(self.desde.strftime("%m/%y")) + '-' + unicode(self.hasta.strftime("%m/%y")) + ')'
+        return unicode(self.ref) 
 
 
 
@@ -130,11 +130,11 @@ class RetencionFija(models.Model):
 class RemuneracionFija(models.Model):
     """Remuneracion fija por cago y antigüedad."""
 
-    ref  = models.CharField(u'Referencia', max_length=10,
-        help_text=u'Referencia interna o descripción corta')
+    ref  = models.CharField(u'Referencia', max_length=30,
+        help_text=u'Referencia interna')
     codigo = models.CharField(u'Código', max_length=5,
         help_text=u'Código de la remuneracion')
-    nombre  = models.CharField(u'Nombre', max_length=50,
+    nombre  = models.CharField(u'Nombre', max_length=30,
         help_text=u'Nombre de la remuneracion')
     remunerativo = models.BooleanField(u'Remunerativa',
         help_text=u'Una remuneración es remunerativa cuando se le aplican descuentos de Ley (jubilación, obra social, art, etc.)')
@@ -158,7 +158,7 @@ class RemuneracionFija(models.Model):
             opc += u'B'
         else:
             opc += u'NB'
-        return self.ref + opc + '(' + unicode(self.desde.strftime("%m/%y")) + '-' + unicode(self.hasta.strftime("%m/%y")) + ')'
+        return unicode(self.ref) + opc
 
 
 class ValoresRemuneracionFija(models.Model):
@@ -177,7 +177,7 @@ class ValoresRemuneracionFija(models.Model):
         ordering = ['cargo', 'valor']
 
     def __unicode__(self):
-        return unicode(self.remuneracion) + unicode(self.cargo) + u"$" + unicode(self.valor) 
+        return unicode(self.remuneracion) + unicode(self.cargo)
 
 
 class ValoresRemuneracionFijaConAntig(models.Model):
@@ -202,7 +202,7 @@ class ValoresRemuneracionFijaConAntig(models.Model):
         ordering = ['cargo', 'antig_desde', 'valor']
 
     def __unicode__(self):
-        return unicode(self.remuneracion) + unicode(self.cargo) + u"$" + unicode(self.valor) 
+        return unicode(self.remuneracion) + unicode(self.cargo) 
 
 
 
@@ -216,11 +216,11 @@ class Bonificacion(models.Model):
         ('E', u'Especialización')
     )
 
-    ref  = models.CharField(u'Referencia', max_length=10,
-        help_text=u'Referencia interna o descripción corta')
+    ref  = models.CharField(u'Referencia', max_length=30,
+        help_text=u'Referencia interna')
     codigo = models.CharField(u'Código', max_length=5,
         help_text=u'Código de la bonificación')
-    nombre  = models.CharField(u'Nombre', max_length=50,
+    nombre  = models.CharField(u'Nombre', max_length=30,
         help_text=u'Nombre de la bonificación')
     tipo_bonificacion = models.CharField(u'Tipo de bonificación', max_length=1, choices=TIPO_BONIFICACION,
         help_text=u'El tipo de bonificacion, Por Ej. Doctorado, Maestría, etc.')
@@ -236,7 +236,7 @@ class Bonificacion(models.Model):
         ordering = ['codigo', 'nombre', 'desde', 'hasta']
 
     def __unicode__(self):
-        return self.ref + u" " + '(' + unicode(self.desde.strftime("%m/%y")) + '-' + unicode(self.hasta.strftime("%m/%y")) + ')'
+        return unicode(self.ref)
 
 
 
@@ -249,13 +249,11 @@ class Antiguedad(models.Model):
         ('T', u'Todos los Cargos')
     )
 
-
-
-    ref  = models.CharField(u'Referencia', max_length=10,
-        help_text=u'Referencia interna o descripción corta')
+    ref  = models.CharField(u'Referencia', max_length=30,
+        help_text=u'Referencia interna')
     codigo = models.CharField(u'Código', max_length=5,
         help_text=u'Código de la bonificación')
-    nombre  = models.CharField(u'Nombre', max_length=50,
+    nombre  = models.CharField(u'Nombre', max_length=30,
         help_text=u'Nombre de la bonificación. En este caso Antigüedad')
     aplicado_a = models.CharField(u'Aplicado a', max_length=1, choices=APLICADO_A,
         help_text=u'A qué cargos se deben aplicar, i.e. Universitarios o Preuniversitarios.')
@@ -275,6 +273,6 @@ class Antiguedad(models.Model):
         ordering = ['codigo', 'nombre', 'desde', 'hasta', 'antig_desde', 'antig_hasta']
 
     def __unicode__(self):
-        return self.ref + u" " + '(' + unicode(self.desde.strftime("%m/%y")) + '-' + unicode(self.hasta.strftime("%m/%y")) + ')'
+        return unicode(self.ref)
 
 
