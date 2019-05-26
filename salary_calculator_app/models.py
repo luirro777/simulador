@@ -70,104 +70,37 @@ class GarantiaSalarialUniversitaria(models.Model):
 
 class Cargo(models.Model):
     """Modelo que representa un Cargo, ya sea pre o universitario."""
+    TIPO_CARGO = (
+        ('U', u'Universitario'),
+        ('P', u'Preuniversitario')
+    )
 
-    lu = models.PositiveSmallIntegerField(u'Código LU', validators=[validate_isgzero],
-        help_text=u'El código L.U. del cargo que figura en la planilla de la UNC.')
     pampa = models.PositiveSmallIntegerField(u'Código PAMPA', unique=True, validators=[validate_isgzero],
         help_text=u'El código PAMPA del cargo que figura en la planilla de la UNC.')
-    denominacion = models.ForeignKey('DenominacionCargo',
-        help_text=u'El nombre del cargo asociado.')
-
-    #rem_fijas = models.ManyToManyField('RemuneracionFija', blank=True)
-    #rem_porcentuales = models.ManyToManyField('RemuneracionPorcentual', blank=True)
-    #ret_fijas = models.ManyToManyField('RetencionFija', blank=True)
-    #ret_porcentuales = models.ManyToManyField('RetencionPorcentual', blank=True)
-
-    class Meta:
-        ordering = ['denominacion']
-
-    def __unicode__(self):
-        return unicode(self.denominacion)
-
-
-class DenominacionCargo(models.Model):
-    """El nombre de un cargo docente. Ej: Profesor Adjunto, Ayudante Alumno, etc"""
-
-    nombre = models.CharField(u'Denominacion del Cargo', max_length=50, unique=True,
-        help_text=u'El nombre de un cargo docente. Ej: Profesor Titular, Profesor Asociado, etc')
-    
-    class Meta:
-        ordering = ['nombre']
-
-    def __unicode__(self):
-        return self.nombre
-
-
-class CargoUniversitario(Cargo):
-    """Cargo de docente Universitario."""
-
-    DEDICACION_OPCS = (
-        ('D.E', u'Dedicación Exclusiva'),
-        ('D.S.E', u'Dedicación Semi Exclusiva'),
-        ('D.S', u'Dedicación Simple')
-    )
-    dedicacion = models.CharField(u'Dedicación', max_length=5, choices=DEDICACION_OPCS,
-        help_text=u'El tipo de dedicación para el cargo. Pueden ser dedicación exclusiva, semi-exclusiva o simple.')
-    #adic2003 = models.FloatField(u'Adic. 8% RHCS 153/03', blank=True, null=True,    
-    #help_text=u'Es el adicional del 8% del salario básico del año 2003 que le corresponde a este cargo.')
-
-    class Meta:
-        ordering = ['pampa']
-
-    def __unicode__(self):
-        return super(CargoUniversitario, self).__unicode__() + " " + self.dedicacion
-
-
-class CargoPreUniversitario(Cargo):
-    """Cargo de docente Preuniversitario."""
-
-    TIPOHORAS_OPCS = (
-        ('C', u'Cátedra'),
-        ('R', u'Reloj')
-    )
+    denominacion = models.CharField(u'Denominacion del Cargo', max_length=50, unique=True,
+        help_text=u'El nombre de un cargo. Ej: Profesor Titular, Profesor Asociado, etc')
+    dedicacion = models.CharField(u'Tipo de cargo', max_length=5, choices=TIPO_CARGO,
+        help_text=u'El tipo de cargo. Puede ser Universitario o Preuniversitario.')
     horas = models.FloatField(u'Cantidad de Horas Cátedra', validators=[validate_isgezero],
-        help_text=u'La cantidad de horas para el cargo como figuran en la planilla de la UNC. Ej: Al cargo "Vice Director de 1°" le corresponden 25 horas.')
-    tipo_horas = models.CharField(u'Tipo de Horas', max_length=1, choices=TIPOHORAS_OPCS,
-        help_text=u'El tipo de horas del cargo.')
+        help_text=u'La cantidad de horas cátedra para el cargo como figuran en la planilla de la UNC. Ej: Al cargo "Vice Director de 1°" le corresponden 25 horas.')
     pago_por_hora=models.BooleanField(u'Pago por hora?',
         help_text=u'Poner "Sí" si este cargo se paga por cantidad de horas. Poner "No" en caso contrario.')
-
     class Meta:
         ordering = ['pampa']
 
     def __unicode__(self):
-        if self.pago_por_hora or self.horas <= 0.:
-            return str(self.pampa) + " - " + super(CargoPreUniversitario, self).__unicode__()
-        return str(self.pampa) + " - " + super(CargoPreUniversitario, self).__unicode__() + " - " + unicode(self.horas) + "hs"
+        if (self.pago_por_hora):
+            return str(self.pampa) + " - " + self.denominacion + " - " + unicode(self.horas) + "hs"            
+        return unicode(self.pampa + " - " +self.denominacion)
 
 
 class Retencion(models.Model):
     """Representa a una retencion."""
 
-    MODO_OPCS = (
-        ('P', u'Se aplica a la persona (solo una vez).'),
-        ('C', u'Se aplica por cargo (una vez por cada cargo).'),
-    )
-
-    # Tuplas de opciones.
-    APP_OPCS = (
-        ('U', u'Cargos Universitarios'),
-        ('P', u'Cargos Preuniversitarios'),
-        ('T', u'Todos los cargos')
-    )
-
     codigo = models.CharField(u'Código', max_length=5,
         help_text=u'El código de la retencion tal cual figura en la lista de la web de ADIUC.')
     nombre  = models.CharField(u'Nombre', max_length=50,
         help_text=u'El nombre de la retencion tal cual figura en la lista de la web de ADIUC.')
-    aplicacion = models.CharField(u'Aplica a', max_length=1, choices=APP_OPCS,
-        help_text=u'A qué tipo de cargo aplica esta retencion.')
-    modo = models.CharField(u'Modo', max_length=1,choices=MODO_OPCS)
 
     class Meta:
         ordering = ['codigo', 'nombre', 'aplicacion']
@@ -183,11 +116,6 @@ class Retencion(models.Model):
 # porcentuales de ANTIGÜEDAD de la escala de Art. Nº de la Ley Nº 1820.
 class Remuneracion(models.Model):
     """Representa un adicional, es decir, una remuneracion."""
-
-    MODO_OPCS = (
-        ('P', u'Se aplica a la persona (solo una vez).'),
-        ('C', u'Se aplica por cargo (una vez por cada cargo).'),
-    )
 
     # Tuplas de opciones.
     APP_OPCS = (

@@ -34,10 +34,10 @@ urlpatterns = patterns('',
     # url(r'^salary_calculator/', include('salary_calculator.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+#    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
-    url(r'^ganancias/$', 'salary_calculator_app.views.ganancias'),
+#    url(r'^ganancias/$', 'salary_calculator_app.views.ganancias'),
 )
