@@ -193,7 +193,7 @@ def calculate(request):
         #context['detailsform'] = detailsform
 
     return render_to_response('calculate.html', context)
-
+'''
 def calculateDASPU(fecha,remunerativo):
     
     daspu_context={}
@@ -201,12 +201,12 @@ def calculateDASPU(fecha,remunerativo):
     daspu_extra = 0.0
 
     rets_porc_daspu = RetencionPorcentual.objects.filter(
-        retencion__codigo =daspu_code,
-        vigencia__desde__lte=fecha,
-        vigencia__hasta__gte=fecha
+        codigo =daspu_code,
+        desde__lte=fecha,
+        hasta__gte=fecha
         )
     if rets_porc_daspu.exists():
-        r = rets_porc_daspu.order_by('vigencia__hasta')[rets_porc_daspu.count()-1]
+        r = rets_porc_daspu.order_by('hasta')[rets_porc_daspu.count()-1]
 
         daspu_objs = RetencionDaspu.objects.filter(
             retencion=r,
@@ -243,7 +243,9 @@ def calculateDASPU(fecha,remunerativo):
                 daspu_context['daspu'] = daspu_obj
         
     return daspu_context
+'''
 
+'''
 def calculateRemRetPorPersona(context, es_afiliado, nro_forms_univ, nro_forms_preuniv):
 
     fecha = context['fecha']
@@ -359,6 +361,30 @@ def get_retenciones_remuneraciones(aplicacion, modo, fecha):
     result['rem_fijas'] = get_remuneraciones(RemuneracionFija)
     result['rem_porcentuales'] = get_remuneraciones(RemuneracionPorcentual)
     return result
+'''
+
+def get_remuneraciones_fijas(cargo_obj, fecha, antig):
+    result = dict()
+    #Obtengo las remuneraciones fijas
+    result = ['rem_fijas'] = ValoresRemuneracionFija.objects.filter(
+            remuneracion__desde__lte = fecha,
+            remuneracion__hasta__gte = fecha,
+            cargo = cargo_obj
+            )
+    
+    #Obtengo las remuneraciones fijas que dependan de la antiguedad
+    result = ['rem_fijas_ant'] = ValoresRemuneracionFijaConAntig.objects.filter(
+            remuneracion__desde__lte = fecha,
+            remuneracion__hasta__gte = fecha,
+            cargo = cargo_obj,
+            antig_desde__lte = antig,
+            antig_hasta__gte = antig
+            )
+    return result
+
+
+
+
 
 def filter_doc_masters_from_rem_porcentuales(rem_porcentuales, has_doctorado, has_master, has_especialista, aplicacion):
     """Elimina las remuneraciones porcentuales asociadas a titulos adicionales segun
@@ -392,22 +418,39 @@ def filter_doc_masters_from_rem_porcentuales(rem_porcentuales, has_doctorado, ha
 
     return rem_porcentuales
 
+'''
 def get_antiguedad(antiguedad, fecha):
-    antiguedades = AntiguedadUniversitaria.objects.filter(
+    antiguedades = Antiguedad.objects.filter(
         anio=antiguedad,
-        vigencia__desde__lte=fecha,
-        vigencia__hasta__gte=fecha
+        desde__lte=fecha,
+        hasta__gte=fecha
     )
     return False if not antiguedades.exists() else antiguedades[0]
 
-def get_basico(cargo, fecha):
-    basicos = SalarioBasicoUniv.objects.filter(
-        cargo=cargo,
+'''
+def get_antiguedad(antig, fecha, aplicacion):
+    antiguedad = Antiguedad.objects.filter(
+            antig_desde__lte=antig,
+            antig_hasta__gte=antig,
+            desde__lte=fecha,
+            hasta__gte=fecha,
+            aplicado_a=aplicacion
+            )
+    return False if not antiguedad.exists() else antiguedad.porcentaje
+
+
+
+def get_basico(cargo_obj, fecha):
+    basico = ValoresRemuneracionFija.objects.filter(
+        cargo=cargo_obj,
+        remuneracion__nombre = 'Basico',
         vigencia__desde__lte=fecha,
         vigencia__hasta__gte=fecha
     )
-    return False if not basicos.exists() else basicos.reverse()[0]
+    return False if not basicos.exists() else basico.valor
 
+
+'''
 def get_remuneraciones_antiguedad(fecha, excl, modo='C', cargo_univ=None):
     return RemuneracionPorcentualAntiguedad.objects.filter(
             vigencia__desde__lte=fecha,
@@ -415,6 +458,7 @@ def get_remuneraciones_antiguedad(fecha, excl, modo='C', cargo_univ=None):
             remuneracion__modo=modo,
             cargo_universitario=cargo_univ
             ).exclude(remuneracion__aplicacion=excl)
+'''
 
 def get_data(cargo_obj, fecha, antig, has_doctorado, has_master, has_especialista, es_afiliado):
     ###### Salario Bruto.
@@ -427,33 +471,51 @@ def get_data(cargo_obj, fecha, antig, has_doctorado, has_master, has_especialist
     rem_list = list()  # Tuplas (obj remuneracion, importe).
     result = {}
 
+    '''
     # Obtengo las Retenciones / Remuneraciones que son para cargos universitarios.
     ret_rem_cargo_univ = get_retenciones_remuneraciones('U', 'C', fecha)
     ret_rem_cargo_all = get_retenciones_remuneraciones('T', 'C', fecha)
+    '''
+    '''
     # El operador | es la union de qs. & es la interseccion.
     ret_fijas = ret_rem_cargo_univ['ret_fijas'] | ret_rem_cargo_all['ret_fijas'] 
     ret_porcentuales = ret_rem_cargo_univ['ret_porcentuales'] | ret_rem_cargo_all['ret_porcentuales']
     rem_fijas = ret_rem_cargo_univ['rem_fijas'] | ret_rem_cargo_all['rem_fijas']
     rem_porcentuales = ret_rem_cargo_univ['rem_porcentuales'] | ret_rem_cargo_all['rem_porcentuales']
-
+    '''
+    
+    
+    '''
     # Obtengo la Antiguedad
-    antiguedad = get_antiguedad(antig, fecha)
+    antiguedad = get_antiguedad(antig, fecha, 'U')
     if not antiguedad:
         context['error_msg'] = u'No existe información de Salarios Básicos \
             para los datos ingresados. Por favor intente con otros datos.'
         return context
     rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo = antiguedad.remuneracion.codigo)
+    '''
+    
+    
+    #Antiguedad
+    antiguedad = get_antiguedad(antig, fecha, 'U')
+    if not antiguedad:
+        context['error_msg'] = u'No existe información de Salarios Básicos \
+            para los datos ingresados. Por favor intente con otros datos.'
+        return context
 
-    # El basico fijado en septiembre del año anterior.
+    # El basico 
     basico = get_basico(cargo_obj, fecha)
     if not basico:
         result['error_msg'] = u'No existe información de Salarios Básicos \
             para los datos ingresados. Por favor intente con otros datos.'
         return result
+    
+    
     bonificable += basico.valor # Sumo el basico al bonificable.
-    remunerativo += basico.valor
-    rem_fijas = rem_fijas.exclude(remuneracion__codigo=basico.remuneracion.codigo)
-
+    remunerativo += basico.valor # Sumo el basico al remunerativo
+    remunerativo += antiguedad # Sumo la antiguedad al remunerativo
+    
+    '''
     # Obtengo las remunaraciones fijas inherentes al cargo que sean bonificables.
     rems_fijas_cargo = RemuneracionFijaCargo.objects.filter(
                         cargo = cargo_obj,
@@ -470,17 +532,20 @@ def get_data(cargo_obj, fecha, antig, has_doctorado, has_master, has_especialist
 
             rem_fijas = rem_fijas.exclude(remuneracion__codigo = rem.remuneracion.codigo)
             rem_list.append( (rem, rem.valor) )
+    '''
 
-	#####Comienzo codigo lromano ########
+	
 	# Obtengo las remuneraciones fijas relacionadas con un cargo y una antigüedad
-    rems_fijas_cargo_antiguedad = RemuneracionFijaCargoAntiguedad.objects.filter(
+    rems_fijas_cargo_antiguedad = ValoresRemuneracionFijaConAntig.objects.filter(
                         cargo = cargo_obj,
-                        anio = antig,
+                        antig_desde__lte = antig,
+                        antig_hasta__gte = antig,
                         vigencia__desde__lte=fecha,
                         vigencia__hasta__gte=fecha,
-                        remuneracion__bonificable=False
+                                                
                         )
     if rems_fijas_cargo_antiguedad.exists():
+        '''
         for rem in rems_fijas_cargo_antiguedad:
             # Sumo el bonificable, el remunerativo y el no remunerativo segun corresponda.
             #bonificable += rem.valor
@@ -489,8 +554,10 @@ def get_data(cargo_obj, fecha, antig, has_doctorado, has_master, has_especialist
 
             rem_fijas = rem_fijas.exclude(remuneracion__codigo = rem.remuneracion.codigo)
             rem_list.append( (rem, rem.valor) )
+        '''
+        
 	
-	#### Fin codigo lromano ######
+
 
     # Obtengo las otras remuneraciones fijas bonificables.
     rems_fijas_otras = RemuneracionFija.objects.filter(

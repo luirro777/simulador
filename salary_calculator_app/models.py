@@ -128,7 +128,7 @@ class RetencionFija(models.Model):
 
 
 class RemuneracionFija(models.Model):
-    """Remuneracion fija por cago y antigüedad."""
+    """Remuneracion fija por cargo y antigüedad."""
 
     ref  = models.CharField(u'Referencia', max_length=30,
         help_text=u'Referencia interna')
