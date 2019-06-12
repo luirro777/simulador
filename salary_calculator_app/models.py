@@ -158,7 +158,7 @@ class RemuneracionFija(models.Model):
             opc += u'B'
         else:
             opc += u'NB'
-        return unicode(self.ref) + opc
+        return unicode(self.ref) + opc + unicode(self.nombre)
 
 
 class ValoresRemuneracionFija(models.Model):
