@@ -74,6 +74,10 @@ class RetencionPorcentual(models.Model):
             help_text=u'Comienzo del período de tiempo')
     hasta = models.DateField(u'Vigente hasta',
             help_text=u'Finalización del período de tiempo')
+    por_cargo = models.BooleanField(u'Por cargo?',
+            help_text=u'Indica si la retencion se efectúa por cargo o por persona')
+    cargo = models.ForeignKey('Cargo',
+        help_text=u'Cargo al cual se aplica la retencion (en el caso q sea por cargo).')
 
 
     class Meta:
@@ -115,7 +119,10 @@ class RetencionFija(models.Model):
             help_text=u'Comienzo del período de tiempo')
     hasta = models.DateField(u'Vigente hasta',
             help_text=u'Finalización del período de tiempo')
-
+    por_cargo = models.BooleanField(u'Por cargo?',
+            help_text=u'Indica si la retencion se efectúa por cargo o por persona')
+    cargo = models.ForeignKey('Cargo',
+        help_text=u'Cargo al cual se aplica la retencion (en el caso q sea por cargo).')
     class Meta:
         ordering = ['codigo', 'nombre', 'desde', 'hasta']
 
