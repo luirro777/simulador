@@ -352,17 +352,7 @@ def get_basico(cargo_obj, fecha, antig):
     return False if not basico.exists() else basico.valor
 
 
-'''
-def get_remuneraciones_antiguedad(fecha, excl, modo='C', cargo_univ=None):
-    return RemuneracionPorcentualAntiguedad.objects.filter(
-            vigencia__desde__lte=fecha,
-            vigencia__hasta__gte=fecha,
-            remuneracion__modo=modo,
-            cargo_universitario=cargo_univ
-            ).exclude(remuneracion__aplicacion=excl)
-'''
-
-def get_data(cargo_obj, fecha, antig, aplicacion):
+def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     ###### Salario Bruto.
     # Registro el bonificable, el remunerativo y el no remunerativo
     # Es por CARGO
@@ -430,7 +420,6 @@ def get_data(cargo_obj, fecha, antig, aplicacion):
                 
             rem_list.append( (rem_fija, rem_fija.valor))
     
- 
     
     #Procedo al calculo de la antiguedad
     antiguedad_monto = bonificable * antiguedad / 100
@@ -489,6 +478,7 @@ def processUnivFormSet(commonform, univformset):
     total_remuneraciones = 0.0
     total_ret = 0.0
     total_neto = 0.0
+    horas = 0
 
     for univform in univformset:
 
@@ -500,7 +490,7 @@ def processUnivFormSet(commonform, univformset):
         cargo_obj = univform.cleaned_data['cargo']
 
         ###### Obtengo todo lo necesario en un dict.
-        datos = get_data(cargo_obj, fecha, antig, 'U')
+        datos = get_data(cargo_obj, fecha, antig, horas, 'U')
         if datos.has_key('error_msg'):
             context['error_msg'] = datos['error_msg']
             return context
@@ -584,145 +574,12 @@ def processPreUnivFormSet(commonform, preunivformset):
         cargo_obj = preunivform.cleaned_data['cargo']
         horas = preunivform.cleaned_data['horas']
 
-
-        ###### Salario Bruto.
-        # Registro el bonificable, el remunerativo, el no remunerativo y los descuentos.
-        bonificable = 0.0
-        remunerativo = 0.0
-        no_remunerativo = 0.0
-        descuentos = 0.0
-        ret_list = list()  # Tuplas de la forma (obj retencion, importe).
-        rem_list = list()  # Tuplas (obj remuneracion, importe).
-
-        # El basico fijado en septiembre del año anterior.
-        basicos = SalarioBasicoPreUniv.objects.filter(
-                    cargo=cargo_obj,
-                    vigencia__desde__lte=fecha,
-                    vigencia__hasta__gte=fecha
-                  )
-        basico = None
-        antiguedad_importe = 0.0
-        salario_bruto = 0.0
-        if not basicos.exists():
-            context['error_msg'] = u'No existe información de Salarios Básicos para los datos ingresados. Por favor introduzca otros datos.'
+        datos = get_data(cargo_obj, fecha, antig, horas, 'U')
+        if datos.has_key('error_msg'):
+            context['error_msg'] = datos['error_msg']
             return context
-        else:
-            basico = basicos.order_by('vigencia__desde')[basicos.count()-1]
-            for bas in basicos:
-                rem_fijas = rem_fijas.exclude(remuneracion__codigo = bas.remuneracion.codigo)
 
-        # Sumo el basico al bonificable.
-        bonificable += basico.valor * horas if cargo_obj.pago_por_hora else basico.valor
-        remunerativo += basico.valor * horas if cargo_obj.pago_por_hora else basico.valor
-        
-        # Obtengo las remunaraciones fijas inherentes al cargo que sean bonificables.
-        rems_fijas_cargo = RemuneracionFijaCargo.objects.filter(
-                            cargo = cargo_obj,
-                            vigencia__desde__lte=fecha,
-                            vigencia__hasta__gte=fecha,
-                            remuneracion__bonificable=True
-                          )
-        if rems_fijas_cargo.exists():
-            for rem in rems_fijas_cargo:
-                # Sumo el bonificable, el remunerativo y el no remunerativo segun corresponda.
-                bonificable += rem.valor
-                remunerativo += rem.valor if rem.remuneracion.remunerativo else 0.0
-                no_remunerativo += rem.valor if not rem.remuneracion.remunerativo else 0.0
 
-                rem_fijas = rem_fijas.exclude(remuneracion__codigo = rem.remuneracion.codigo)
-                rem_list.append( (rem, rem.valor) )
-
-        # Obtengo las otras remuneraciones fijas bonificables.
-        rems_fijas_otras = RemuneracionFija.objects.filter(
-                                vigencia__desde__lte=fecha,
-                                vigencia__hasta__gte=fecha,
-                                remuneracion__modo='C',
-                                remuneracion__bonificable=True,
-                                remuneracionfijacargo=None,
-                                salariobasicouniv=None,
-                                salariobasicopreuniv=None
-                           ).exclude(remuneracion__aplicacion='U')
-        if rems_fijas_otras.exists():
-            # Sumo el bonificable, el remunerativo y el no remunerativo segun corresponda.
-            for rem in rems_fijas_otras:
-                bonificable += rem.valor
-                remunerativo += rem.valor if rem.remuneracion.remunerativo else 0.0
-                no_remunerativo += rem.valor if not rem.remuneracion.remunerativo else 0.0
-
-                rem_fijas = rem_fijas.exclude(remuneracion__codigo = rem.remuneracion.codigo)
-                rem_list.append( (rem, rem.valor) )
-
-        # Obtengo los nomencladores.
-        rems_nomenclador = RemuneracionNomenclador.objects.filter(
-                                vigencia__desde__lte=fecha,
-                                vigencia__hasta__gte=fecha,
-                                remuneracion__bonificable=True,
-                                cargo = cargo_obj
-                            )
-        adic_nom = 0.0
-        if rems_nomenclador.exists():
-            adic_nom = rems_nomenclador[0].porcentaje
-        rem_porcentuales = rem_porcentuales.exclude(remuneracionnomenclador__isnull=False)
-        # Obtengo las remuneraciones porcentuales bonificables.
-        rems_porc_bonif = RemuneracionPorcentual.objects.filter(
-                            vigencia__desde__lte=fecha,
-                            vigencia__hasta__gte=fecha,
-                            remuneracion__modo='C',
-                            remuneracion__bonificable=True,
-                            remuneracionnomenclador=None
-                          ).exclude(remuneracion__aplicacion='U')
-        if rems_porc_bonif.exists():
-            for rem in rems_porc_bonif:
-                porcentaje = rem.porcentaje + adic_nom if rem.nomenclador else rem.porcentaje
-                importe = basico.valor * horas * porcentaje / 100.0 if cargo_obj.pago_por_hora else basico.valor * porcentaje/100.0
-                bonificable += importe
-                remunerativo += importe if rem.remuneracion.remunerativo else 0.0
-                no_remunerativo += importe if not rem.remuneracion.remunerativo else 0.0
-                if importe > 0.0:
-                    rem_list.append( (rem, importe) )
-                rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo = rem.remuneracion.codigo)
-        antiguedad_importe = bonificable * antiguedad.porcentaje / 100.0
-        remunerativo += antiguedad_importe
-
-        rem_porcentuales_antiguedad = get_remuneraciones_antiguedad(fecha, excl='U')
-        print(rem_porcentuales_antiguedad)
-        if rem_porcentuales_antiguedad.exists():
-            for rem in rem_porcentuales_antiguedad:
-                porcentaje = rem.porcentaje / 100
-                importe = basico.valor * (1 + antiguedad.porcentaje / 100) * porcentaje
-                remunerativo += importe if rem.remuneracion.remunerativo else 0.0
-                no_remunerativo += importe if not rem.remuneracion.remunerativo else 0.0
-                bonificable += importe if rem.remuneracion.bonificable else 0.0
-
-                rem_list.append((rem, importe))
-
-        # Adicional titulo doctorado nivel medio (cod 53), Adicional titulo maestria nivel medio (cod 55)
-        rem_porcentuales = filter_doc_masters_from_rem_porcentuales(rem_porcentuales, has_doctorado, has_master, has_especialista, 'P')
-
-        ## Retenciones NO especiales:
-        if not es_afiliado:
-            ret_porcentuales = ret_porcentuales.exclude(retencion__codigo = afiliacion_code)
-
-        for rem in rem_porcentuales:
-            importe = bonificable * rem.porcentaje / 100.
-            remunerativo += importe if rem.remuneracion.remunerativo else 0.0
-            no_remunerativo += importe if not rem.remuneracion.remunerativo else 0.0
-            rem_list.append( (rem, importe) )
-
-        for rem in rem_fijas:
-            remunerativo += rem.valor if rem.remuneracion.remunerativo else 0.0
-            no_remunerativo += rem.valor if not rem.remuneracion.remunerativo else 0.0
-            rem_list.append( (rem, rem.valor) )
-
-        for ret in ret_porcentuales:
-            importe = remunerativo * ret.porcentaje / 100.
-            descuentos += importe
-            ret_list.append( (ret, importe) )
-
-        for ret in ret_fijas:
-            descuentos += ret.valor
-            ret_list.append( (ret, ret.valor) )
-            
         ###### Salario Neto.
         salario_neto = remunerativo + no_remunerativo - descuentos
 
