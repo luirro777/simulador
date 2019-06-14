@@ -377,8 +377,15 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
             para los datos ingresados. Por favor intente con otros datos.'
     return result
     
-    bonificable += basico.valor # Sumo el basico al bonificable.
-    remunerativo += basico.valor # Sumo el basico al remunerativo
+    if (cargo_obj.pago_por_hora):
+        bonificable += basico * horas
+    else:
+        bonificable += basico 
+    
+    if (cargo_obj.pago_por_hora):
+        remunerativo += basico * horas
+    else:
+        remunerativo += basico
     
      	
     #Obtengo otras remuneraciones fijas para el cargo, fecha y antiguedad
@@ -435,11 +442,14 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     result['bonificable'] = bonificable
     result['antiguedad'] = antiguedad
     result['antiguedad_monto'] = antiguedad_monto
+    if (cargo_obj.pago_por_hora):
+        result['basico_horas'] = basico * horas
+    else:
+        result['basico_horas'] = 0.0
     return result
 
-
+#Obtiene los descuentos por PERSONA
 def get_retenciones_fijas(fecha):
-    #Obtiene los descuentos por PERSONA
     ret_fijas = list()    
     fijas = 0.0    
     
@@ -456,16 +466,45 @@ def get_retenciones_fijas(fecha):
     result['total_ret_fijas'] = fijas    
     return result
 
+#Obtiene las bonificaciones por titulo
+def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista):
+    bonificaciones = list()
+    result = {}
     
+    if(has_doctorado):
+        opcion = u'Doctorado'
+    elif(has_master):
+        opcion = u'Maestría'
+    else:
+        opcion = u'Especialización'
+        
+    bonificaciones = Bonificacion.objects.filter(
+            vigencia__desde__lte=fecha,
+            vigencia__hasta__gte=fecha,
+            tipo_bonificacion = opcion
+        )
+    if bonificaciones.exist():
+        for bonif in bonificaciones:
+            result['opcion'] = opcion
+            result['bonificacion']= bonif.porcentaje
+    
+    return result
+
 
 def processUnivFormSet(commonform, univformset):
     """Procesa un formset con formularios de cargos universitarios. Retorna un context"""
 
     antig = commonform.cleaned_data['antiguedad']
     fecha = datetime.date(int(commonform.cleaned_data['anio']), int(commonform.cleaned_data['mes']), 10)
+    titulo_dict = {}
     has_doctorado = commonform.cleaned_data['doctorado']
     has_master = commonform.cleaned_data['master']
     has_especialista = commonform.cleaned_data['especialista']
+    bonif_doctorado = 0.0
+    bonif_master = 0.0
+    bonif_especialista = 0.0
+    total_bonificaciones = 0.0
+    
     #afiliacion adiuc:
     es_afiliado = commonform.cleaned_data['afiliado']
     context = {}
@@ -517,7 +556,22 @@ def processUnivFormSet(commonform, univformset):
         total_rem += datos['remunerativo']
         total_no_rem += datos['no_remunerativo']
         total_remuneraciones += total_rem_cargo
-
+        
+        
+    #Bonificaciones
+    if (has_doctorado):    
+        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
+        bonif_doctorado = datos_bonif['bonificacion']
+        total_bonificacion = total_bonificacion 
+    if (has_master):    
+        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
+        bonif_master = datos_bonif['bonificacion']
+    if (has_especialista):    
+        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
+        bonif_especialista = datos_bonif['bonificacion']
+   
+        
+    
     #Calculo los descuentos
     datos_desc = get_retenciones_fijas(fecha)
     
@@ -579,35 +633,41 @@ def processPreUnivFormSet(commonform, preunivformset):
             context['error_msg'] = datos['error_msg']
             return context
 
-
-        ###### Salario Neto.
-        salario_neto = remunerativo + no_remunerativo - descuentos
+        # Calculo los acumulados de los salarios para todos los cargos preunivs.
+        # y tambien los acumulados de las remuneraciones y retenciones.
+        total_rem += datos['remunerativo']
+        total_no_rem += datos['no_remunerativo']
+        total_remuneraciones += total_rem_cargo
 
         # Aqui iran los resultados del calculo para este cargo en particular.
         form_res = {
             'cargo': cargo_obj,
-            'basico_horas': basico.valor * horas,
-            'basico': basico.valor,
-            'retenciones': ret_list,
-            'remuneraciones': rem_list,
-            'descuentos': descuentos,
-            'remunerativo': remunerativo,
-            'no_remunerativo': no_remunerativo,
-            'salario_neto': salario_neto,
-            'antiguedad': antiguedad,
-            'antiguedad_importe': antiguedad_importe
+            'basico': datos['basico'],
+            'basico_horas': datos['basico_horas'],
+            'remunerativo': datos['remunerativo'],
+            'no_remunerativo': datos['no_remunerativo'],
+            'remuneraciones' : datos['rem_list'],
+            'bonificable': datos['bonificable'],
+            'total_rem_cargo': total_rem_cargo,
+            'antiguedad': datos['antiguedad'],
+            'antiguedad_importe': datos['antiguedad_monto'],
         }
         lista_res.append(form_res)
-
-        #print form_res
-
-        # Calculo los acumulados de los salarios para todos los cargos.
-        # y tambien los acumulados de las remuneraciones y retenciones.
-        total_rem += remunerativo
-        total_no_rem += no_remunerativo
-        total_ret += descuentos
-        total_neto += salario_neto
-
+        
+    #Calculo los descuentos
+    datos_desc = get_retenciones_fijas(fecha)
+    
+    #Aqui van las retenciones
+    form_ret = {
+            'descuentos': datos_desc['ret_list'],
+            'total_ret_fijas': datos_desc['total_ret_fijas']
+            }
+    lista_res.append(form_ret)
+    total_ret = datos_desc['total_ret_fijas']
+    
+    #Salario neto
+    total_neto = total_rem + total_no_rem - total_ret
+    
     context['total_rem'] = total_rem
     context['total_no_rem'] = total_no_rem
     context['total_ret'] = total_ret
@@ -615,6 +675,7 @@ def processPreUnivFormSet(commonform, preunivformset):
     context['lista_res'] = lista_res
 
     return context
+
 
 def ganancias(request):
 #def ganancias(anio, cargo, antig, doct, master, afiliado):
