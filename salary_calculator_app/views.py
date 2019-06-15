@@ -514,7 +514,9 @@ def processUnivFormSet(commonform, univformset):
 
     total_rem = 0.0
     total_no_rem = 0.0
+    total_rem_cargo = 0.0
     total_remuneraciones = 0.0
+    total_bonificable = 0.0
     total_ret = 0.0
     total_neto = 0.0
     horas = 0
@@ -556,20 +558,26 @@ def processUnivFormSet(commonform, univformset):
         total_rem += datos['remunerativo']
         total_no_rem += datos['no_remunerativo']
         total_remuneraciones += total_rem_cargo
+        total_bonificable += datos['bonificable']
         
         
     #Bonificaciones
     if (has_doctorado):    
         datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_doctorado = datos_bonif['bonificacion']
-        total_bonificacion = total_bonificacion 
+        bonif_doctorado = total_bonificable * datos_bonif['bonificacion'] / 100        
     if (has_master):    
         datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_master = datos_bonif['bonificacion']
+        bonif_master = total_bonificable * datos_bonif['bonificacion'] / 100
     if (has_especialista):    
         datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_especialista = datos_bonif['bonificacion']
+        bonif_especialista = total_bonificable * datos_bonif['bonificacion']
    
+    form_bonif = {
+            'bonif_doctorado': bonif_doctorado,
+            'bonif_master': bonif_master,
+            'bonif_especialista': bonif_especialista,
+        }
+    lista_res.append(form_res)
         
     
     #Calculo los descuentos
@@ -591,6 +599,7 @@ def processUnivFormSet(commonform, univformset):
     context['total_ret'] = total_ret
     context['total_neto'] = total_neto
     context['lista_res'] = lista_res
+    
 
     return context
 
@@ -628,7 +637,7 @@ def processPreUnivFormSet(commonform, preunivformset):
         cargo_obj = preunivform.cleaned_data['cargo']
         horas = preunivform.cleaned_data['horas']
 
-        datos = get_data(cargo_obj, fecha, antig, horas, 'U')
+        datos = get_data(cargo_obj, fecha, antig, horas, 'P')
         if datos.has_key('error_msg'):
             context['error_msg'] = datos['error_msg']
             return context
@@ -654,6 +663,26 @@ def processPreUnivFormSet(commonform, preunivformset):
         }
         lista_res.append(form_res)
         
+        #Bonificaciones
+    if (has_doctorado):    
+        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
+        bonif_doctorado = total_bonificable * datos_bonif['bonificacion'] / 100        
+    if (has_master):    
+        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
+        bonif_master = total_bonificable * datos_bonif['bonificacion'] / 100
+    if (has_especialista):    
+        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
+        bonif_especialista = total_bonificable * datos_bonif['bonificacion']
+   
+    form_bonif = {
+            'bonif_doctorado': bonif_doctorado,
+            'bonif_master': bonif_master,
+            'bonif_especialista': bonif_especialista,
+        }
+    lista_res.append(form_res)
+        
+    
+    
     #Calculo los descuentos
     datos_desc = get_retenciones_fijas(fecha)
     
