@@ -79,11 +79,8 @@ class CommonForm(forms.Form):
 
     antiguedad = forms.ChoiceField(
         label=u'Antigüedad', 
-        choices=[(i, unicode(i)) for i in 
-            range(0, max(AntiguedadUniversitaria.objects.all()[AntiguedadUniversitaria.objects.count()-1].anio,
-            AntiguedadPreUniversitaria.objects.all()[AntiguedadPreUniversitaria.objects.count()-1].anio)+1)
-        ],
-        #choices=[(i, unicode(i)) for i in range(0, 24)],
+        choices=[(i, unicode(i)) for i in range(0,24)],
+        widget = forms.Select(),       
         help_text=u'Ingrese su antigüedad docente'
     )
 
@@ -106,7 +103,9 @@ class CargoUnivForm(forms.Form):
 
     cargo = forms.ModelChoiceField(
         label=u'Cargo',
-        queryset=CargoUniversitario.objects.all(),
+        queryset=Cargo.objects.filter(
+                tipo_cargo = u'Universitario'
+                ),
         empty_label=None,
         help_text=u'Ingrese el nombre del cargo.'
     )
@@ -115,8 +114,8 @@ class CargoUnivForm(forms.Form):
 class CargoPreUnivForm(forms.Form):
     """Formulario de calculo de salario docente para docentes Pre-universitarios."""
 
-    cargo = forms.ModelChoiceField(label=u'Cargo', queryset=CargoPreUniversitario.objects.all(), empty_label=None,
-       widget=forms.Select(attrs={'onChange': 'show_horas(this)', 'onLoad':'show_horas(this)', 'onKeyUp':'this.blur();this.focus();'}),
+    cargo = forms.ModelChoiceField(label=u'Cargo', queryset=CargoPreUniversitario.objects.filter(tipo_cargo = u'Preuniversitario'), empty_label=None,
+       widget=forms.Select(attrs={'onChange': 'this.horas', 'onLoad':'this.horas', 'onKeyUp':'this.blur();this.focus();'}),
        help_text=u'Ingrese el nombre del cargo.'
     )
 
@@ -125,8 +124,11 @@ class CargoPreUnivForm(forms.Form):
         help_text=u'Ingrese la cantidad de horas asociadas al cargo.'
     )
 
+'''
     pago_por_horas_info = forms.ChoiceField(
         required=False, 
         choices=[(unicode(c.id), unicode(c.pago_por_hora))  for c in CargoPreUniversitario.objects.all()],
         widget=forms.Select(attrs={'style':'display: none;'})
+
     )
+'''
