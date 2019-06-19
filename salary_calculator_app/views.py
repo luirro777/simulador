@@ -175,7 +175,8 @@ def calculate(request):
         #context['detailsform'] = detailsform
 
     return render_to_response('calculate.html', context)
-'''
+
+
 def calculateDASPU(fecha,remunerativo):
     
     daspu_context={}
@@ -225,7 +226,7 @@ def calculateDASPU(fecha,remunerativo):
                 daspu_context['daspu'] = daspu_obj
         
     return daspu_context
-'''
+
 
 
 def filter_doc_masters_from_rem_porcentuales(rem_porcentuales, has_doctorado, has_master, has_especialista, aplicacion):
@@ -260,16 +261,6 @@ def filter_doc_masters_from_rem_porcentuales(rem_porcentuales, has_doctorado, ha
 
     return rem_porcentuales
 
-'''
-def get_antiguedad(antiguedad, fecha):
-    antiguedades = Antiguedad.objects.filter(
-        anio=antiguedad,
-        desde__lte=fecha,
-        hasta__gte=fecha
-    )
-    return False if not antiguedades.exists() else antiguedades[0]
-
-'''
 # Retorna el porcentaje de aumento en base a la antiguedad
 def get_antiguedad(antig, fecha, aplicacion):
     antiguedad = Antiguedad.objects.filter(
@@ -334,12 +325,9 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     #Obtengo otras remuneraciones fijas para el cargo, fecha y antiguedad
     rems_fijas = ValoresRemuneracionFija.objects.filter(
             cargo = cargo_obj,
-            antig_desde__lte = antig,
-            antig_hasta__gte = antig,
-            vigencia__desde__lte=fecha,
-            vigencia__hasta__gte=fecha,
-            remuneracion__nombre!=u'Basico'            
-            )
+            remuneracion__desde__lte=fecha,
+            remuneracion__hasta__gte=fecha          
+            ).exclude(remuneracion__nombre = u'Basico')
     if rems_fijas.exists():
         for rem_fija in rems_fijas:
             if (rem_fija.remuneracion.remunerativo):
@@ -410,15 +398,21 @@ def get_retenciones_fijas(fecha):
     return result
 
 #Obtiene los descuentos porcentuales por PERSONA
-def get_retenciones_porcentuales(fecha, remunerativo):
+def get_retenciones_porcentuales(fecha, remunerativo, es_afiliado):
     ret_porcentuales = list()
     ret_porc_calculadas = list()
-    total_ret_porc = 0.0    
+    total_ret_porc = 0.0
     
-    ret_porcentuales = RetencionPorcentual.objects.filter(
-            desde__lte=fecha,
-            hasta__gte=fecha 
-            ) 
+    if (es_afiliado):
+        ret_porcentuales = RetencionPorcentual.objects.filter(
+                desde__lte=fecha,
+                hasta__gte=fecha 
+                )
+    else:
+        ret_porcentuales = RetencionPorcentual.objects.filter(
+                desde__lte=fecha,
+                hasta__gte=fecha               
+                ).exclude( nombre = u'ADIUC')
     for ret_porc in ret_porcentuales:
         ret_porc_calculada = remunerativo * ret_porc.porcentaje / 100
         ret_porc_calculadas.append((ret_porc, ret_porc_calculada))
@@ -547,7 +541,7 @@ def processUnivFormSet(commonform, univformset):
     lista_res.append(form_ret)
     
     #Calculo las retenciones porcentuales y las pongo en un form
-    datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem)    
+    datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)    
         
     form_ret_porc = {
             'retenciones_porcentuales': datos_desc_porc['ret_porc_calculadas'],
