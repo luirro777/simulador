@@ -54,7 +54,7 @@ class Cargo(models.Model):
         ordering = ['pampa', 'tipo_cargo', 'denominacion']
 
     def __unicode__(self):
-        return unicode(self.pampa + " - " +self.denominacion)
+        return unicode(str(self.pampa) + " - " +self.denominacion)
 
 
 
@@ -158,13 +158,13 @@ class RemuneracionFija(models.Model):
 
     def __unicode__(self):
         if self.remunerativo:
-            opc = u' R'
+            opc = u' R '
         else:
-            opc =  u' NR'
+            opc =  u' NR '
         if self.bonificable:
-            opc += u'B'
+            opc += u' B '
         else:
-            opc += u'NB'
+            opc += u' NB '
         return unicode(self.ref) + opc + unicode(self.nombre)
 
 
@@ -280,6 +280,6 @@ class Antiguedad(models.Model):
         ordering = ['codigo', 'nombre', 'desde', 'hasta', 'antig_desde', 'antig_hasta']
 
     def __unicode__(self):
-        return unicode(self.ref)
+        return unicode(self.ref) + " - " + unicode(str(self.porcentaje))
 
 

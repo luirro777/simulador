@@ -31,13 +31,13 @@ class CargoAdmin(admin.ModelAdmin):
     list_display = ('denominacion', 'pampa', 'tipo_cargo', 'horas', 'pago_por_hora')
 
 class RetencionPorcentualAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'nombre', 'porcentaje', 'desde', 'hasta', 'por_cargo', 'cargo')
+    list_display = ('ref','codigo', 'nombre', 'porcentaje', 'desde', 'hasta', 'por_cargo', 'cargo')
 
 class RetencionFijaAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'nombre', 'valor', 'desde', 'hasta', 'por_cargo', 'cargo')
+    list_display = ('ref','codigo', 'nombre', 'valor', 'desde', 'hasta', 'por_cargo', 'cargo')
 
 class RemuneracionFijaAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'nombre', 'remunerativo', 'bonificable', 'desde', 'hasta')
+    list_display = ('ref','codigo', 'nombre', 'remunerativo', 'bonificable', 'desde', 'hasta')
 
 class ValoresRemuneracionFijaAdmin(admin.ModelAdmin):
     list_display = ('remuneracion', 'cargo', 'valor')
@@ -46,10 +46,10 @@ class ValoresRemuneracionFijaConAntigAdmin(admin.ModelAdmin):
     list_display = ('remuneracion', 'cargo', 'valor', 'antig_desde', 'antig_hasta')
 
 class BonificacionAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'nombre', 'tipo_bonificacion', 'porcentaje', 'desde', 'hasta')
+    list_display = ('ref','codigo', 'nombre', 'tipo_bonificacion', 'porcentaje', 'desde', 'hasta')
     
 class AntiguedadAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'nombre', 'aplicado_a', 'antig_desde', 'antig_hasta', 'porcentaje', 'desde', 'hasta')
+    list_display = ('ref','codigo', 'nombre', 'aplicado_a', 'antig_desde', 'antig_hasta', 'porcentaje', 'desde', 'hasta')
     
 admin.site.register(Cargo, CargoAdmin)
 admin.site.register(RetencionPorcentual, RetencionPorcentualAdmin)

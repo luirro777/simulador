@@ -104,7 +104,7 @@ class CargoUnivForm(forms.Form):
     cargo = forms.ModelChoiceField(
         label=u'Cargo',
         queryset=Cargo.objects.filter(
-                tipo_cargo = u'Universitario'
+                tipo_cargo = 'U'
                 ),
         empty_label=None,
         help_text=u'Ingrese el nombre del cargo.'
@@ -114,7 +114,7 @@ class CargoUnivForm(forms.Form):
 class CargoPreUnivForm(forms.Form):
     """Formulario de calculo de salario docente para docentes Pre-universitarios."""
 
-    cargo = forms.ModelChoiceField(label=u'Cargo', queryset=Cargo.objects.filter(tipo_cargo = u'Preuniversitario'), empty_label=None,
+    cargo = forms.ModelChoiceField(label=u'Cargo', queryset=Cargo.objects.filter(tipo_cargo = 'P'), empty_label=None,
        widget=forms.Select(attrs={'onChange': 'this.horas', 'onLoad':'this.horas', 'onKeyUp':'this.blur();this.focus();'}),
        help_text=u'Ingrese el nombre del cargo.'
     )

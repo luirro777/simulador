@@ -270,20 +270,18 @@ def get_antiguedad(antig, fecha, aplicacion):
             hasta__gte=fecha,
             aplicado_a=aplicacion
             )
-    return False if not antiguedad.exists() else antiguedad.porcentaje
-
+    if not antiguedad.exists():
+        return False
+    else:
+        return antiguedad[0].porcentaje
 
 # Retorna el basico
 def get_basico(cargo_obj, fecha, antig):
     basico = ValoresRemuneracionFija.objects.filter(
             cargo = cargo_obj,
-            antig_desde__lte = antig,
-            antig_hasta__gte = antig,
-            vigencia__desde__lte=fecha,
-            vigencia__hasta__gte=fecha,
             remuneracion__nombre=u'Basico'
         )
-    return False if not basico.exists() else basico.valor
+    return False if not basico.exists() else basico[0].valor
 
 
 def get_data(cargo_obj, fecha, antig, horas, aplicacion):
@@ -295,7 +293,8 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     bonificable = 0.0       
     rem_list = list()  # Tuplas (obj remuneracion, importe).
     ret_list = list() # Tuplas (obj retencion, importe)
-    result = {}    
+    result = {}
+    context = {}    
 
     #Obtengo el porcentaje de antiguedad
     antiguedad = get_antiguedad(antig, fecha, aplicacion)
@@ -309,7 +308,7 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     if not basico:
         result['error_msg'] = u'No existe información de Salarios Básicos \
             para los datos ingresados. Por favor intente con otros datos.'
-    return result
+        return result
     
     if (cargo_obj.pago_por_hora):
         bonificable += basico * horas
@@ -343,9 +342,7 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     rems_fijas_cargo_antiguedad = ValoresRemuneracionFijaConAntig.objects.filter(
                         cargo = cargo_obj,
                         antig_desde__lte = antig,
-                        antig_hasta__gte = antig,
-                        vigencia__desde__lte=fecha,
-                        vigencia__hasta__gte=fecha                                                
+                        antig_hasta__gte = antig                                        
                         )
     if rems_fijas_cargo_antiguedad.exists():        
         for rem_fija in rems_fijas_cargo_antiguedad:
@@ -402,6 +399,7 @@ def get_retenciones_porcentuales(fecha, remunerativo, es_afiliado):
     ret_porcentuales = list()
     ret_porc_calculadas = list()
     total_ret_porc = 0.0
+    result = {}
     
     if (es_afiliado):
         ret_porcentuales = RetencionPorcentual.objects.filter(
@@ -416,11 +414,11 @@ def get_retenciones_porcentuales(fecha, remunerativo, es_afiliado):
     for ret_porc in ret_porcentuales:
         ret_porc_calculada = remunerativo * ret_porc.porcentaje / 100
         ret_porc_calculadas.append((ret_porc, ret_porc_calculada))
-        total_rec_porc += ret_porc_calculada
+        total_ret_porc += ret_porc_calculada
         
     result['ret_porcentuales'] = ret_porcentuales
     result['ret_porc_calculadas'] = ret_porc_calculadas
-    result['total_rec_porc'] = total_rec_porc
+    result['total_ret_porc'] = total_ret_porc
     return result
 
 #Obtiene las bonificaciones por titulo
@@ -535,7 +533,7 @@ def processUnivFormSet(commonform, univformset):
     #Calculo los retenciones fijas y las pongo en un form
     datos_desc = get_retenciones_fijas(fecha)    
     form_ret = {
-            'descuentos': datos_desc['ret_list'],
+            'descuentos': datos_desc['ret_fijas'],
             'total_ret_fijas': datos_desc['total_ret_fijas']
             }
     lista_res.append(form_ret)
@@ -574,6 +572,9 @@ def processPreUnivFormSet(commonform, preunivformset):
     has_master = commonform.cleaned_data['master']
     has_especialista = commonform.cleaned_data['especialista']
     es_afiliado = commonform.cleaned_data['afiliado']
+    bonif_doctorado = 0.0
+    bonif_master = 0.0
+    bonif_especialista = 0.0
     context = {}
 
     #guardo en esta lista un diccionario para cada formulario procesado
@@ -637,7 +638,7 @@ def processPreUnivFormSet(commonform, preunivformset):
             'bonif_master': bonif_master,
             'bonif_especialista': bonif_especialista,
         }
-    lista_res.append(form_res)    
+    lista_res.append(form_bonif)    
     
     
     #Calculo los descuentos
@@ -645,7 +646,7 @@ def processPreUnivFormSet(commonform, preunivformset):
     
     #Aqui van las retenciones
     form_ret = {
-            'descuentos': datos_desc['ret_list'],
+            'descuentos': datos_desc['ret_fijas'],
             'total_ret_fijas': datos_desc['total_ret_fijas']
             }
     lista_res.append(form_ret)
