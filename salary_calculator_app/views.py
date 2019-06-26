@@ -30,11 +30,12 @@ from django.forms.formsets import formset_factory
 from forms import *
 from models import *
 
-import datetime
+import datetime, pprint
 
 # Debugger
 import pdb
 
+pp = pprint.PrettyPrinter(indent=4)
 ###############################################
 # Hardcoded
 ###############################################
@@ -144,12 +145,14 @@ def calculate(request):
             #afiliacion_daspu = ""
             afiliacion_adiuc = commonform.cleaned_data['afiliado']
             #calcular_ganancias = commonform.cleaned_data['ganancias']
+            '''
             context = calculateRemRetPorPersona(
                 context,
                 afiliacion_adiuc,
                 nro_forms_univ,
                 nro_forms_preuniv
                 )
+            '''
             #### Usando el neto, chequeo si hacen falta aplicar garantias salariales.
             #context = calculateGarantiasSalariales(context, context_univ['codigos_cargo'], context_preuniv['lista_res'], fecha)
             # Renderizo el template con el contexto.
@@ -279,7 +282,9 @@ def get_antiguedad(antig, fecha, aplicacion):
 def get_basico(cargo_obj, fecha, antig):
     basico = ValoresRemuneracionFija.objects.filter(
             cargo = cargo_obj,
-            remuneracion__nombre=u'Basico'
+            remuneracion__nombre=u'Basico',
+            remuneracion__desde__lte=fecha,
+            remuneracion__hasta__gte=fecha
         )
     return False if not basico.exists() else basico[0].valor
 
@@ -365,7 +370,7 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     #Lleno el context que devuelvo como resultado
     result['basico'] = basico
     result['rem_list'] = rem_list
-    result['remunerativo'] = remunerativo
+    result['remunerativo'] = remunerativo + antiguedad_monto
     result['no_remunerativo'] = no_remunerativo
     result['bonificable'] = bonificable
     result['antiguedad'] = antiguedad
@@ -456,8 +461,7 @@ def processUnivFormSet(commonform, univformset):
     has_especialista = commonform.cleaned_data['especialista']
     bonif_doctorado = 0.0
     bonif_master = 0.0
-    bonif_especialista = 0.0
-    total_bonificaciones = 0.0    
+    bonif_especialista = 0.0    
     es_afiliado = commonform.cleaned_data['afiliado'] #Es afiliado a ADIUC?
     context = {}
 
@@ -545,6 +549,7 @@ def processUnivFormSet(commonform, univformset):
             'retenciones_porcentuales': datos_desc_porc['ret_porc_calculadas'],
             'total_ret_porc' : datos_desc_porc['total_ret_porc']
             }
+    lista_res.append(form_ret_porc)
     
     #Total de retenciones
     total_ret = datos_desc['total_ret_fijas'] + datos_desc_porc['total_ret_porc']
@@ -556,7 +561,11 @@ def processUnivFormSet(commonform, univformset):
     context['total_no_rem'] = total_no_rem
     context['total_ret'] = total_ret
     context['total_neto'] = total_neto
-    context['lista_res'] = lista_res    
+    context['anios'] = antig
+    context['lista_res'] = lista_res
+    
+    pp.pprint (lista_res)
+
 
     return context
 
@@ -565,7 +574,7 @@ def processPreUnivFormSet(commonform, preunivformset):
     """Procesa un formset con formularios de cargos preuniversitarios.
     Retorna un context."""
 
-    antiguedad = commonform.cleaned_data['antiguedad']
+    antig = commonform.cleaned_data['antiguedad']
     #fecha = commonform.cleaned_data['fecha']
     fecha = datetime.date(int(commonform.cleaned_data['anio']), int(commonform.cleaned_data['mes']), 10)
     has_doctorado = commonform.cleaned_data['doctorado']
@@ -586,6 +595,8 @@ def processPreUnivFormSet(commonform, preunivformset):
     total_no_rem = 0.0
     total_ret = 0.0
     total_neto = 0.0
+    total_rem_cargo = 0.0
+    total_remuneraciones = 0.0
 
    
     for preunivform in preunivformset:
@@ -619,6 +630,7 @@ def processPreUnivFormSet(commonform, preunivformset):
             'total_rem_cargo': total_rem_cargo,
             'antiguedad': datos['antiguedad'],
             'antiguedad_importe': datos['antiguedad_monto'],
+            'anios': datos['anios']
         }
         lista_res.append(form_res)
         

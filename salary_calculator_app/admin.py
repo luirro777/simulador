@@ -31,7 +31,7 @@ class CargoAdmin(admin.ModelAdmin):
     list_display = ('denominacion', 'pampa', 'tipo_cargo', 'horas', 'pago_por_hora')
 
 class RetencionPorcentualAdmin(admin.ModelAdmin):
-    list_display = ('ref','codigo', 'nombre', 'porcentaje', 'desde', 'hasta', 'por_cargo', 'cargo')
+    list_display = ('ref','codigo', 'nombre', 'porcentaje', 'desde', 'hasta')
 
 class RetencionFijaAdmin(admin.ModelAdmin):
     list_display = ('ref','codigo', 'nombre', 'valor', 'desde', 'hasta', 'por_cargo', 'cargo')

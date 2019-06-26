@@ -42,70 +42,8 @@
             <br>
             
             <div class="results_cargo">
-                {% if afamiliar_list or rem_fijas_persona or rem_porc_persona or ret_fijas_persona or ret_porc_persona %}
-                <table class="result" cellspaing=2><br>
-    
-                    <div class="title_importes"><b>Importes por Persona:</b></div>
-                    <tr>
-                        <th> C&oacute;digo </th>
-                        <th> Detalle </th>
-                        <th> Importe (+) </th>
-                        <th> Importe (-) </th>
-                    </tr>
+            
 
-                    {% for afamiliar in afamiliares_list %}
-                        <tr>
-                        <td>  </td>
-                        <td> Asignaci&oacute;n Familiar ({{ afamiliar.concepto }})</td>
-                        <td class="adicionales"> {{ afamiliar.valor|floatformat:-2 }} </td>
-                        <td></td>
-                        </tr>
-                    {% endfor %}
-                    
-                    {% for rem,importe in rem_fijas_persona %}
-                        <tr>
-                        <td> {{ rem.remuneracion.codigo }} </td>
-                        <td> {{ rem.remuneracion.nombre }} </td>
-                        <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
-                        <td></td>
-                        </tr>
-                    {% endfor %}
-                    
-                    {% for rem,importe in rem_porc_persona %}
-                        <tr>
-                        <td> {{ rem.remuneracion.codigo }} </td>
-                        <td> {{ rem.remuneracion.nombre }} ({{ rem.porcentaje }}%) </td>
-                        <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
-                        <td></td>
-                        </tr>
-                    {% endfor %}
-
-                    {% for ret,importe in ret_fijas_persona %}
-                        <tr>
-                        {% if ret.retencion.codigo == '42/0' %}
-                            <td class="estimativo"> {{ ret.retencion.codigo }} </td>
-                            <td class="estimativo"> {{ ret.retencion.nombre }}<sup>(1)</sup> </td>
-                        {% else %}
-                            <td> {{ ret.retencion.codigo }} </td>
-                            <td> {{ ret.retencion.nombre }} </td>
-                        {% endif %}
-                        <td>  </td>
-                        <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
-                        </tr>
-                    {% endfor %}
-                    
-                    {% for ret,importe in ret_porc_persona %}
-                        <tr>
-                        <td> {{ ret.retencion.codigo }} </td>
-                        <td> {{ ret.retencion.nombre }} ({{ ret.porcentaje }}%) </td>
-                        <td></td>
-                        <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
-                        </tr>
-                    {% endfor %}
-                    
-                    
-                </table>
-                {% endif %}
                <hr>     
 
                 <div class="title_importes"><b>Cargos:</b></div>
@@ -126,25 +64,18 @@
                         <th> Importe (-) </th>
                     </tr>
                     <tr>
-                        <td> 01/0 </td>
+                        <td> F10 </td>
                         <td> Sueldo B&aacute;sico</td>
                         <td class="adicionales"> {% if res.cargo.pago_por_hora %} {{ res.basico_horas|floatformat:-2 }} {% else %} {{ res.basico|floatformat:-2 }} {% endif %} </td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td>{{ res.antiguedad.remuneracion.codigo }}</td>
-                        <td> {{ res.antiguedad.remuneracion.nombre }} ({{res.antiguedad.anio}} años - {{ res.antiguedad.porcentaje }}%)</td>
+                        <td> F30 </td>
+                        <td> Antiguedad: {{ res.anios}}  años - ({{ res.antiguedad }}%)</td>
                         <td class="adicionales">{{ res.antiguedad_importe|floatformat:-2 }} </td>
                         <td></td>
                     </tr>
-
-                    <!--<tr class="bold">
-                        <td></td>
-                        <td>Salario Bruto:</td>
-                        <td>{{ res.salario_bruto|floatformat:-2 }} </td>
-                        <td></td>
-                    </tr>-->
 
                     {% for obj, importe in res.remuneraciones %}
 						<tr>
@@ -190,18 +121,78 @@
                     </tr>
                     <tr class="bold">
                         <td></td>
-                        <td> Descuentos: </td>
-                        <td></td>
-                        <td class="descuentos"> {{ res.descuentos|floatformat:-2 }} </td>
-                    </tr>
-                    <tr class="bold">
-                        <td></td>
                         <td> Salario Neto: </td>
-                        <td> {{ res.salario_neto|floatformat:-2 }} </td>
+                        <td> {{ res.total_rem_cargo|floatformat:-2 }} </td>
                         <td></td>
                     </tr>
                 </table>
                 {% endfor %}
+                
+                {% if afamiliar_list or rem_fijas_persona or rem_porc_persona or ret_fijas_persona or ret_porc_persona %}
+            
+                <table class="result" cellspaing=2><br>
+    
+                    <div class="title_importes"><b>Importes por Persona:</b></div>
+                    <tr>
+                        <th> C&oacute;digo </th>
+                        <th> Detalle </th>
+                        <th> Importe (+) </th>
+                        <th> Importe (-) </th>
+                    </tr>
+
+                    {% for afamiliar in afamiliares_list %}
+                        <tr>
+                        <td>  </td>
+                        <td> Asignaci&oacute;n Familiar ({{ afamiliar.concepto }})</td>
+                        <td class="adicionales"> {{ afamiliar.valor|floatformat:-2 }} </td>
+                        <td></td>
+                        </tr>
+                    {% endfor %}
+                    
+                    {% for rem,importe in rem_fijas_persona %}
+                        <tr>
+                        <td> {{ rem.remuneracion.codigo }} </td>
+                        <td> {{ rem.remuneracion.nombre }} </td>
+                        <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
+                        <td></td>
+                        </tr>
+                    {% endfor %}
+                    
+                    {% for rem,importe in rem_porc_persona %}
+                        <tr>
+                        <td> {{ rem.remuneracion.codigo }} </td>
+                        <td> {{ rem.remuneracion.nombre }} ({{ rem.porcentaje }}%) </td>
+                        <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
+                        <td></td>
+                        </tr>
+                    {% endfor %}
+
+                    {% for ret in retenciones_porcentuales %}
+                        <tr>
+                        {% if ret.codigo == '42/0' %}
+                            <td class="estimativo"> {{ ret.codigo }} </td>
+                            <td class="estimativo"> {{ ret.nombre }}<sup>(1)</sup> </td>
+                        {% else %}
+                            <td> {{ ret.codigo }} </td>
+                            <td> {{ ret.nombre }} </td>
+                        {% endif %}
+                        <td>  </td>
+                        <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
+                        </tr>
+                    {% endfor %}
+                    
+                    {% for ret,importe in ret_list %}
+                        <tr>
+                        <td> {{ ret.retencion.codigo }} </td>
+                        <td> {{ ret.retencion.nombre }} ({{ ret.porcentaje }}%) </td>
+                        <td></td>
+                        <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
+                        </tr>
+                    {% endfor %}
+                    
+                    
+                </table>
+                {% endif %}
 
             </div>
 
