@@ -51,9 +51,8 @@
                 <table>
                     <tr>
                         <td> Cargo: </td>
-                        <td>{{ res.cargo.denominacion }} {% if res.cargo.dedicacion %}, {{ res.cargo.get_dedicacion_display }}{% endif %}</td>
-                    </tr>
-                    <tr> <td> C&oacute;digo LU: </td> <td> {{ res.cargo.lu }} </td> </tr>
+                        <td>{{ res.cargo.denominacion }} </td>
+                    </tr>                    
                     <tr> <td> C&oacute;digo PAMPA: </td> <td> {{ res.cargo.pampa }} </td> </tr>
                 </table>
                 <table class="result" cellspaing=2><br>
@@ -64,14 +63,14 @@
                         <th> Importe (-) </th>
                     </tr>
                     <tr>
-                        <td> F10 </td>
+                        <td> 10 </td>
                         <td> Sueldo B&aacute;sico</td>
                         <td class="adicionales"> {% if res.cargo.pago_por_hora %} {{ res.basico_horas|floatformat:-2 }} {% else %} {{ res.basico|floatformat:-2 }} {% endif %} </td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td> F30 </td>
+                        <td> 30 </td>
                         <td> Antiguedad: {{ res.anios}}  años - ({{ res.antiguedad }}%)</td>
                         <td class="adicionales">{{ res.antiguedad_importe|floatformat:-2 }} </td>
                         <td></td>
@@ -121,15 +120,15 @@
                     </tr>
                     <tr class="bold">
                         <td></td>
-                        <td> Salario Neto: </td>
+                        <td> Salario Neto para el cargo: </td>
                         <td> {{ res.total_rem_cargo|floatformat:-2 }} </td>
                         <td></td>
                     </tr>
                 </table>
                 {% endfor %}
-                
+                <!--
                 {% if afamiliar_list or rem_fijas_persona or rem_porc_persona or ret_fijas_persona or ret_porc_persona %}
-            
+                -->
                 <table class="result" cellspaing=2><br>
     
                     <div class="title_importes"><b>Importes por Persona:</b></div>
@@ -181,10 +180,10 @@
                         </tr>
                     {% endfor %}
                     
-                    {% for ret,importe in ret_list %}
+                    {% for ret in lista_res.retenciones_porcentuales %}
                         <tr>
-                        <td> {{ ret.retencion.codigo }} </td>
-                        <td> {{ ret.retencion.nombre }} ({{ ret.porcentaje }}%) </td>
+                        <td> {{ ret.codigo }} </td>
+                        <td> {{ ret.nombre }} ({{ ret.porcentaje }}%) </td>
                         <td></td>
                         <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
                         </tr>
@@ -192,7 +191,7 @@
                     
                     
                 </table>
-                {% endif %}
+               <!-- {% endif %} -->
 
             </div>
 

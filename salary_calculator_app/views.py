@@ -346,6 +346,8 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
 	# Obtengo las remuneraciones fijas relacionadas con un cargo y una antigüedad
     rems_fijas_cargo_antiguedad = ValoresRemuneracionFijaConAntig.objects.filter(
                         cargo = cargo_obj,
+                        remuneracion__desde__lte=fecha,
+                        remuneracion__hasta__gte=fecha,
                         antig_desde__lte = antig,
                         antig_hasta__gte = antig                                        
                         )
@@ -375,6 +377,7 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     result['bonificable'] = bonificable
     result['antiguedad'] = antiguedad
     result['antiguedad_monto'] = antiguedad_monto
+    result['anios'] = antig
     if (cargo_obj.pago_por_hora):
         result['basico_horas'] = basico * horas
     else:
@@ -506,6 +509,7 @@ def processUnivFormSet(commonform, univformset):
             'total_rem_cargo': total_rem_cargo,
             'antiguedad': datos['antiguedad'],
             'antiguedad_importe': datos['antiguedad_monto'],
+            'anios' : datos['anios']
         }
         lista_res.append(form_res)
 
@@ -560,8 +564,7 @@ def processUnivFormSet(commonform, univformset):
     context['total_rem'] = total_rem
     context['total_no_rem'] = total_no_rem
     context['total_ret'] = total_ret
-    context['total_neto'] = total_neto
-    context['anios'] = antig
+    context['total_neto'] = total_neto    
     context['lista_res'] = lista_res
     
     pp.pprint (lista_res)
