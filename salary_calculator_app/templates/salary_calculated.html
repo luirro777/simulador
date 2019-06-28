@@ -127,10 +127,9 @@
                     </tr>
                 </table>
                 {% endif %} <!-- res.cargo -->
-                {% endfor %}
-                <!--
-                {% if afamiliar_list or rem_fijas_persona or rem_porc_persona or ret_fijas_persona or ret_porc_persona %}
-                -->
+                {% endfor %} <!-- res in lista_res -->
+                
+
                 <table class="result" cellspaing=2><br>
     
                     <div class="title_importes"><b>Importes por Persona:</b></div>
@@ -140,6 +139,21 @@
                         <th> Importe (+) </th>
                         <th> Importe (-) </th>
                     </tr>
+
+                    {% for res in lista_res %}
+                     {% if res.retenciones_porcentuales %}
+                    {% for obj, importe in res.retenciones_porcentuales %}
+                     <tr>
+                        <td> {{ obj.codigo }} </td>
+                        <td> {{ obj.nombre }} {% if obj.porcentaje %}(-{{ obj.porcentaje }}%){% endif %} </td>
+                        <td></td>
+                        <td class="descuentos">{{ importe|floatformat:-2 }}</td>
+                    </tr>
+                    {% endfor %}
+                       {% endif %} 
+                      {% endfor %}                  
+
+
 
                     {% for afamiliar in afamiliares_list %}
                         <tr>
@@ -193,7 +207,7 @@
                     
                     
                 </table>
-               <!-- {% endif %} -->
+ 
 
             </div>
 
