@@ -79,7 +79,7 @@ class CommonForm(forms.Form):
 
     antiguedad = forms.ChoiceField(
         label=u'Antigüedad', 
-        choices=[(i, unicode(i)) for i in range(0,24)],
+        choices=[(i, unicode(i)) for i in range(0,25)],
         widget = forms.Select(),       
         help_text=u'Ingrese su antigüedad docente'
     )
@@ -109,6 +109,7 @@ class CargoUnivForm(forms.Form):
         empty_label=None,
         help_text=u'Ingrese el nombre del cargo.'
     )
+        
 
 
 class CargoPreUnivForm(forms.Form):
@@ -123,6 +124,8 @@ class CargoPreUnivForm(forms.Form):
         widget=forms.TextInput(attrs={'maxlength':'5', 'style':'width: 50px;'}),
         help_text=u'Ingrese la cantidad de horas asociadas al cargo.'
     )
+
+
 
 '''
     pago_por_horas_info = forms.ChoiceField(

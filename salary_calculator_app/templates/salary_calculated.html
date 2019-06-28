@@ -50,6 +50,7 @@
                 {% for res in lista_res %}
                 <table>
                     <tr>
+                        {% if res.cargo %} <!-- Si existe un cargo -->
                         <td> Cargo: </td>
                         <td>{{ res.cargo.denominacion }} </td>
                     </tr>                    
@@ -125,6 +126,7 @@
                         <td></td>
                     </tr>
                 </table>
+                {% endif %} <!-- res.cargo -->
                 {% endfor %}
                 <!--
                 {% if afamiliar_list or rem_fijas_persona or rem_porc_persona or ret_fijas_persona or ret_porc_persona %}
@@ -180,7 +182,7 @@
                         </tr>
                     {% endfor %}
                     
-                    {% for ret in lista_res.retenciones_porcentuales %}
+                    {% for ret, importe in retenciones_porcentuales %}
                         <tr>
                         <td> {{ ret.codigo }} </td>
                         <td> {{ ret.nombre }} ({{ ret.porcentaje }}%) </td>

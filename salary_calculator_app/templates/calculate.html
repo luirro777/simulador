@@ -66,10 +66,12 @@
                             <td colspan="2"> {{ commonform.fecha.errors }} </td>
                         </tr> 
                         {% endif %}
+                        
                         <tr>
                             <td> {{ commonform.antiguedad.label_tag }}: </td>
                             <td> {{ commonform.antiguedad }} </td>
                         </tr>
+                        
 			            {% if commonform.antiguedad.errors %}
                         <tr class="error">
                             <td colspan="2"> {{ commonform.antiguedad.errors }} </td>
@@ -119,7 +121,7 @@
                             <tr>
                                 <td class="form_cargo_label"> {{ univform.cargo.label_tag }}: </td>
                                 <td> {{ univform.cargo }} </td>
-                            </tr>
+                            </tr>                       
                             {% if univform.cargo.errors %}
                             <tr class="error"> <td colspan="2"> {{ univform.cargo.errors }} </td></tr>
                             {% endif %}

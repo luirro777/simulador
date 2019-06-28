@@ -265,7 +265,7 @@ def filter_doc_masters_from_rem_porcentuales(rem_porcentuales, has_doctorado, ha
     return rem_porcentuales
 
 # Retorna el porcentaje de aumento en base a la antiguedad
-def get_antiguedad(antig, fecha, aplicacion):
+def get_antiguedad(antig, fecha, aplicacion):    
     antiguedad = Antiguedad.objects.filter(
             antig_desde__lte=antig,
             antig_hasta__gte=antig,
@@ -288,11 +288,9 @@ def get_basico(cargo_obj, fecha, antig):
         )
     return False if not basico.exists() else basico[0].valor
 
-
+#Funcion para obtener todos los datos referidos a un cargo
 def get_data(cargo_obj, fecha, antig, horas, aplicacion):
-    ###### Salario Bruto.
-    # Registro el bonificable, el remunerativo y el no remunerativo
-    # Es por CARGO
+
     remunerativo = 0.0
     no_remunerativo = 0.0
     bonificable = 0.0       
@@ -302,12 +300,16 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
     context = {}    
 
     #Obtengo el porcentaje de antiguedad
-    antiguedad = get_antiguedad(antig, fecha, aplicacion)
-    if not antiguedad:
-        context['error_msg'] = u'No existe información de Salarios Básicos \
-            para los datos ingresados. Por favor intente con otros datos.'
-        return context
-
+    #Primero considero el caso de los preuniversitarios con menos de 1 año de anriguedad    
+    if antig == u'0' and aplicacion == "P":
+        antiguedad = 0
+    else:
+        antiguedad = get_antiguedad(antig, fecha, aplicacion)
+        if not antiguedad:
+            context['error_msg'] = u'No existe información de Salarios Básicos \
+                para los datos ingresados. Por favor intente con otros datos.'
+            return context
+        
     # Obtengo el basico   
     basico = get_basico(cargo_obj, fecha, antig)
     if not basico:
@@ -567,6 +569,8 @@ def processUnivFormSet(commonform, univformset):
     context['total_neto'] = total_neto    
     context['lista_res'] = lista_res
     
+    print("Univ")
+    
     pp.pprint (lista_res)
 
 
@@ -614,6 +618,9 @@ def processPreUnivFormSet(commonform, preunivformset):
         if datos.has_key('error_msg'):
             context['error_msg'] = datos['error_msg']
             return context
+
+        #Remuneracion total para ese cargo
+        total_rem_cargo = datos['remunerativo'] + datos['no_remunerativo']
 
         # Calculo los acumulados de los salarios para todos los cargos preunivs.
         # y tambien los acumulados de las remuneraciones y retenciones.
@@ -675,6 +682,10 @@ def processPreUnivFormSet(commonform, preunivformset):
     context['total_ret'] = total_ret
     context['total_neto'] = total_neto
     context['lista_res'] = lista_res
+
+    print ("Preuniv")
+    pp.pprint (lista_res)
+
 
     return context
 
