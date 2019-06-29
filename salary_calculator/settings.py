@@ -212,3 +212,12 @@ LOGGING = {
 }
 
 DECIMAL_SEPARATOR='.'
+
+SOUTH_MIGRATION_MODULES = {
+        'data_importer': 'data_importer.south_migrations',
+    }
+
+MIGRATION_MODULES = {
+        'data_importer': 'data_importer.django_migrations'
+    },
+

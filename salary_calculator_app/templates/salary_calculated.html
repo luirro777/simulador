@@ -38,16 +38,11 @@
 			<div class = "title">
 			    C&aacute;lculo salarial para el periodo: {{ fecha.month }} / {{ fecha.year }}
 			</div>
-
-            <br>
-            
+            <br>            
             <div class="results_cargo">
-            
-
-               <hr>     
-
+               <hr>
                 <div class="title_importes"><b>Cargos:</b></div>
-                {% for res in lista_res %}
+                {% for res in lista_res %}                
                 <table>
                     <tr>
                         {% if res.cargo %} <!-- Si existe un cargo -->
@@ -126,7 +121,9 @@
                         <td></td>
                     </tr>
                 </table>
+                <hr>
                 {% endif %} <!-- res.cargo -->
+                
                 {% endfor %} <!-- res in lista_res -->
                 
 

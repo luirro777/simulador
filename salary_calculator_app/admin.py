@@ -21,7 +21,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 #=============================================
-
+#from import_export.admin import ImportExportModelAdmin
 from salary_calculator_app.models import *
 from django.contrib import admin
 
@@ -50,7 +50,8 @@ class BonificacionAdmin(admin.ModelAdmin):
     
 class AntiguedadAdmin(admin.ModelAdmin):
     list_display = ('ref','codigo', 'nombre', 'aplicado_a', 'antig_desde', 'antig_hasta', 'porcentaje', 'desde', 'hasta')
-    
+
+
 admin.site.register(Cargo, CargoAdmin)
 admin.site.register(RetencionPorcentual, RetencionPorcentualAdmin)
 admin.site.register(RetencionFija, RetencionFijaAdmin)
