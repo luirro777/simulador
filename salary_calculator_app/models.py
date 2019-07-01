@@ -29,7 +29,7 @@
 
 from django.db import models
 from salary_calculator_app.validators import *
-from data_importer.importers import CSVImporter
+#from data_importer.importers import CSVImporter
 
 
 class Cargo(models.Model):
@@ -54,9 +54,6 @@ class Cargo(models.Model):
 
     def __unicode__(self):
         return unicode(str(self.pampa) + " - " +self.denominacion)
-
-class ImporterCargo(CSVImporter):
-    fields = ['pampa', 'denominacion', 'tipo_cargo', 'horas', 'pago_por_hora']
 
 
 class RetencionPorcentual(models.Model):
