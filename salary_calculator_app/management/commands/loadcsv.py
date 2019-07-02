@@ -73,14 +73,17 @@ class Command(BaseCommand):
                 with open('ValoresRemuneracionFijaConAntig.csv', 'rb') as csvfile:
                     spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
                     for row in spamreader:
-                        remu = row[0]
-                        car = row[1]
+                        
+                        remu = RemuneracionFija.objects.get(ref = row[0])                       
+                        car = Cargo.objects.get(pampa = row[1])
                         val = row[2]
-                        antig_des = row[4]
-                        antig_has = row[5]
-                        valremuficonantig = ValoresRemuneracionFija(remuneracion = remu, cargo = car, valor = val,
-                                                        antig_desde = antig_des, antig_hasta = antig_has)
+                        antig_des = row[3]
+                        antig_has = row[4]
+                        valremuficonantig = ValoresRemuneracionFijaConAntig(remuneracion = remu, cargo = car, valor = val,
+                                                        antig_desde = antig_des, antig_hasta = antig_has)     
                         valremuficonantig.save()
+                        
+                        
             elif model_id == 'Bonificacion':
                 with open('Bonificacion.csv', 'rb') as csvfile:
                     spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
