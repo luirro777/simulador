@@ -64,8 +64,8 @@ class Command(BaseCommand):
                 with open('ValoresRemuneracionFija.csv', 'rb') as csvfile:
                     spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
                     for row in spamreader:
-                        remu = row[0]
-                        car = row[1]
+                        remu = RemuneracionFija.objects.get(ref = row[0])
+                        car = Cargo.objects.get(pampa = row[1])
                         val = row[2]
                         valremufi = ValoresRemuneracionFija(remuneracion = remu, cargo = car, valor = val)
                         valremufi.save()
