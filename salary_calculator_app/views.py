@@ -663,16 +663,25 @@ def processPreUnivFormSet(commonform, preunivformset):
     lista_res.append(form_bonif)    
     
     
-    #Calculo los descuentos
-    datos_desc = get_retenciones_fijas(fecha)
-    
-    #Aqui van las retenciones
+    #Calculo los retenciones fijas y las pongo en un form
+    datos_desc = get_retenciones_fijas(fecha)    
     form_ret = {
             'descuentos': datos_desc['ret_fijas'],
             'total_ret_fijas': datos_desc['total_ret_fijas']
             }
     lista_res.append(form_ret)
-    total_ret = datos_desc['total_ret_fijas']
+    
+    #Calculo las retenciones porcentuales y las pongo en un form
+    datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)    
+        
+    form_ret_porc = {
+            'retenciones_porcentuales': datos_desc_porc['ret_porc_calculadas'],
+            'total_ret_porc' : datos_desc_porc['total_ret_porc']
+            }
+    lista_res.append(form_ret_porc)
+    
+    #Total de retenciones
+    total_ret = datos_desc['total_ret_fijas'] + datos_desc_porc['total_ret_porc']
     
     #Salario neto
     total_neto = total_rem + total_no_rem - total_ret
