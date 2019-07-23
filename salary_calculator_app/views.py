@@ -108,6 +108,7 @@ def calculate(request):
             # Proceso los formularios de cargos.
             context_univ = processUnivFormSet(commonform, univformset)
             context_preuniv = processPreUnivFormSet(commonform, preunivformset)
+            
 
             # Control de errores
             if context_univ.has_key('error_msg'):
@@ -122,6 +123,7 @@ def calculate(request):
             total_no_rem = add_values_from_contexts(context_univ, context_preuniv, 'total_no_rem')
             total_ret = add_values_from_contexts(context_univ, context_preuniv, 'total_ret')
             total_neto = add_values_from_contexts(context_univ, context_preuniv, 'total_neto')
+            total_bonificable = add_values_from_contexts(context_univ, context_preuniv, 'total_bonificable')
 
             fecha = datetime.date(int(commonform.cleaned_data['anio']), int(commonform.cleaned_data['mes']), 10)
             # Hago el merge de los dos contexts.
@@ -129,6 +131,7 @@ def calculate(request):
             context['total_no_rem'] = total_no_rem
             context['total_ret'] = total_ret
             context['total_neto'] = total_neto
+            con
             context['fecha'] = fecha
 
             context['lista_res'] = list()
@@ -178,6 +181,18 @@ def calculate(request):
         #context['detailsform'] = detailsform
 
     return render_to_response('calculate.html', context)
+
+#Calcula montos por persona
+def calculateRemRetPorPersona(context, afiliacion_adiuc, commonform):
+    has_doctorado = commonform.cleaned_data['doctorado']
+    has_master = commonform.cleaned_data['master']
+    has_especialista = commonform.cleaned_data['especialista']
+    fecha = context['fecha']
+    total_rem = context['total_rem']
+    total_no_rem = context['total_no_rem']
+    total_ret = context['total_ret']
+    total_neto = context['total_neto']
+    total_bonificable = context['total_bonificable']
 
 
 def calculateDASPU(fecha,remunerativo):
@@ -421,10 +436,11 @@ def get_retenciones_porcentuales(fecha, remunerativo, es_afiliado):
                 desde__lte=fecha,
                 hasta__gte=fecha               
                 ).exclude( nombre = u'ADIUC')
-    for ret_porc in ret_porcentuales:
-        ret_porc_calculada = remunerativo * ret_porc.porcentaje / 100
-        ret_porc_calculadas.append((ret_porc, ret_porc_calculada))
-        total_ret_porc += ret_porc_calculada
+    if ret_porcentuales.exists():
+        for ret_porc in ret_porcentuales:
+            ret_porc_calculada = remunerativo * ret_porc.porcentaje / 100
+            ret_porc_calculadas.append((ret_porc, ret_porc_calculada))
+            total_ret_porc += ret_porc_calculada
         
     result['ret_porcentuales'] = ret_porcentuales
     result['ret_porc_calculadas'] = ret_porc_calculadas
@@ -454,7 +470,6 @@ def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista):
             result['bonificacion']= bonif.porcentaje
     
     return result
-
 
 def processUnivFormSet(commonform, univformset):
     """Procesa un formset con formularios de cargos universitarios. Retorna un context"""
@@ -521,7 +536,8 @@ def processUnivFormSet(commonform, univformset):
         total_no_rem += datos['no_remunerativo']
         total_remuneraciones += total_rem_cargo
         total_bonificable += datos['bonificable']
-                
+        
+    '''
     #Bonificaciones
     if (has_doctorado):    
         datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
@@ -537,7 +553,7 @@ def processUnivFormSet(commonform, univformset):
             'bonif_doctorado': bonif_doctorado,
             'bonif_master': bonif_master,
             'bonif_especialista': bonif_especialista,
-        }
+            }
     lista_res.append(form_bonif)
             
     #Calculo los retenciones fijas y las pongo en un form
@@ -549,24 +565,25 @@ def processUnivFormSet(commonform, univformset):
     lista_res.append(form_ret)
     
     #Calculo las retenciones porcentuales y las pongo en un form
-    datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)    
         
+    datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)            
     form_ret_porc = {
             'retenciones_porcentuales': datos_desc_porc['ret_porc_calculadas'],
             'total_ret_porc' : datos_desc_porc['total_ret_porc']
             }
     lista_res.append(form_ret_porc)
-    
+            
     #Total de retenciones
     total_ret = datos_desc['total_ret_fijas'] + datos_desc_porc['total_ret_porc']
-    
+    '''
     #Salario neto
     total_neto = total_rem + total_no_rem - total_ret
     
     context['total_rem'] = total_rem
     context['total_no_rem'] = total_no_rem
     context['total_ret'] = total_ret
-    context['total_neto'] = total_neto    
+    context['total_neto'] = total_neto
+    context['total_bonificable'] = total_bonificable    
     context['lista_res'] = lista_res
     
     print("Univ")
@@ -643,7 +660,7 @@ def processPreUnivFormSet(commonform, preunivformset):
             'anios': datos['anios']
         }
         lista_res.append(form_res)
-        
+    '''    
         #Bonificaciones
     if (has_doctorado):    
         datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
@@ -671,6 +688,7 @@ def processPreUnivFormSet(commonform, preunivformset):
             }
     lista_res.append(form_ret)
     
+    
     #Calculo las retenciones porcentuales y las pongo en un form
     datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)    
         
@@ -682,6 +700,7 @@ def processPreUnivFormSet(commonform, preunivformset):
     
     #Total de retenciones
     total_ret = datos_desc['total_ret_fijas'] + datos_desc_porc['total_ret_porc']
+    '''
     
     #Salario neto
     total_neto = total_rem + total_no_rem - total_ret
