@@ -137,21 +137,6 @@
                         <th> Importe (-) </th>
                     </tr>
 
-                    {% for res in lista_res %}
-                     {% if res.retenciones_porcentuales %}
-                    {% for obj, importe in res.retenciones_porcentuales %}
-                     <tr>
-                        <td> {{ obj.codigo }} </td>
-                        <td> {{ obj.nombre }} {% if obj.porcentaje %}(-{{ obj.porcentaje }}%){% endif %} </td>
-                        <td></td>
-                        <td class="descuentos">{{ importe|floatformat:-2 }}</td>
-                    </tr>
-                    {% endfor %}
-                       {% endif %} 
-                      {% endfor %}                  
-
-
-
                     {% for afamiliar in afamiliares_list %}
                         <tr>
                         <td>  </td>
@@ -163,23 +148,23 @@
                     
                     {% for rem,importe in rem_fijas_persona %}
                         <tr>
-                        <td> {{ rem.remuneracion.codigo }} </td>
-                        <td> {{ rem.remuneracion.nombre }} </td>
+                        <td> {{ rem.codigo }} </td>
+                        <td> {{ rem.nombre }} </td>
                         <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
                         <td></td>
                         </tr>
                     {% endfor %}
                     
-                    {% for rem,importe in rem_porc_persona %}
+                    {% for rem in rem_porc_persona %}
                         <tr>
-                        <td> {{ rem.remuneracion.codigo }} </td>
-                        <td> {{ rem.remuneracion.nombre }} ({{ rem.porcentaje }}%) </td>
+                        <td> {{ rem.codigo }} </td>
+                        <td> {{ rem.nombre }} ({{ rem.porcentaje }}%) </td>
                         <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
                         <td></td>
                         </tr>
                     {% endfor %}
-
-                    {% for ret in retenciones_porcentuales %}
+                    
+                    {% for ret,importe in ret_fijas_persona %}
                         <tr>
                         {% if ret.codigo == '42/0' %}
                             <td class="estimativo"> {{ ret.codigo }} </td>
@@ -193,15 +178,18 @@
                         </tr>
                     {% endfor %}
                     
-                    {% for ret, importe in retenciones_porcentuales %}
-                        <tr>
-                        <td> {{ ret.codigo }} </td>
-                        <td> {{ ret.nombre }} ({{ ret.porcentaje }}%) </td>
-                        <td></td>
-                        <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
-                        </tr>
+                    {% for ret in ret_porc_persona%}
+                        {% if ret.retenciones_porcentuales%}
+                            {% for obj,importe in ret.retenciones_porcentuales %}
+                                <tr>
+                                <td> {{ obj.codigo }} </td>
+                                <td> {{ obj.nombre }} ({{ obj.porcentaje }}%) </td>
+                                <td></td>
+                                <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif%}
                     {% endfor %}
-                    
                     
                 </table>
  

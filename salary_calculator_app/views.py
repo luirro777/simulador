@@ -123,7 +123,7 @@ def calculate(request):
             total_no_rem = add_values_from_contexts(context_univ, context_preuniv, 'total_no_rem')
             total_ret = add_values_from_contexts(context_univ, context_preuniv, 'total_ret')
             total_neto = add_values_from_contexts(context_univ, context_preuniv, 'total_neto')
-            total_bonificable = add_values_from_contexts(context_univ, context_preuniv, 'total_bonificable')
+            #total_bonificable = add_values_from_contexts(context_univ, context_preuniv, 'total_bonificable')
 
             fecha = datetime.date(int(commonform.cleaned_data['anio']), int(commonform.cleaned_data['mes']), 10)
             # Hago el merge de los dos contexts.
@@ -131,7 +131,8 @@ def calculate(request):
             context['total_no_rem'] = total_no_rem
             context['total_ret'] = total_ret
             context['total_neto'] = total_neto
-            con
+            context['total_bonificable_u'] = context_univ['total_bonificable']
+            context['total_bonificable_pu'] = context_preuniv['total_bonificable']
             context['fecha'] = fecha
 
             context['lista_res'] = list()
@@ -144,18 +145,9 @@ def calculate(request):
 
             # Calculo de las remuneraciones y retenciones que son por persona.
             # Esto modifica el contexto.
-            #afiliacion_daspu = commonform.cleaned_data['daspu']
-            #afiliacion_daspu = ""
             afiliacion_adiuc = commonform.cleaned_data['afiliado']
             #calcular_ganancias = commonform.cleaned_data['ganancias']
-            '''
-            context = calculateRemRetPorPersona(
-                context,
-                afiliacion_adiuc,
-                nro_forms_univ,
-                nro_forms_preuniv
-                )
-            '''
+            context = calculateRemRetPorPersona(context, afiliacion_adiuc, commonform)
             #### Usando el neto, chequeo si hacen falta aplicar garantias salariales.
             #context = calculateGarantiasSalariales(context, context_univ['codigos_cargo'], context_preuniv['lista_res'], fecha)
             # Renderizo el template con el contexto.
@@ -187,97 +179,106 @@ def calculateRemRetPorPersona(context, afiliacion_adiuc, commonform):
     has_doctorado = commonform.cleaned_data['doctorado']
     has_master = commonform.cleaned_data['master']
     has_especialista = commonform.cleaned_data['especialista']
+    es_afiliado = afiliacion_adiuc
     fecha = context['fecha']
     total_rem = context['total_rem']
     total_no_rem = context['total_no_rem']
     total_ret = context['total_ret']
     total_neto = context['total_neto']
-    total_bonificable = context['total_bonificable']
-
-
-def calculateDASPU(fecha,remunerativo):
+    total_bonificable_u = context['total_bonificable_u']
+    total_bonificable_pu = context['total_bonificable_pu']
+    bonif_doctorado = 0.0
+    bonif_master = 0.0
+    bonif_especialista = 0.0
+    total_bonificaciones = 0.0
+    form_bonif = {}
+    form_ret_porc = {}
+    form_ret = {}
+    ret_porc_persona = list()
+    ret_fijas_persona = list()
+    rem_porc_persona = list()
+    rem_fijas_persona = list()
     
-    daspu_context={}
-    daspu_importe = 0.0
-    daspu_extra = 0.0
+    #Bonificaciones
+    if (total_bonificable_u != 0): #Esta condicion se da en caso de haber 1 o mas univ forms
+        bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, 'U')
+        if (has_doctorado): 
+            bonif_doctorado = total_bonificable_u * bonif / 100
+            form_bonif = {
+            'bonif_doctorado_u': bonif_doctorado
+            }
+            total_bonificaciones = bonif_doctorado
+        elif (has_master):    
+            bonif_master = total_bonificable_u * bonif / 100
+            form_bonif = {
+            'bonif_master_u': bonif_master
+            }
+            total_bonificaciones = bonif_master
+        elif (has_especialista):
+            bonif_especialista = total_bonificable_u * bonif / 100
+            form_bonif = {
+            'bonif_especialista_u': bonif_especialista
+            }
+            total_bonificaciones = bonif_especialista
 
-    rets_porc_daspu = RetencionPorcentual.objects.filter(
-        codigo =daspu_code,
-        desde__lte=fecha,
-        hasta__gte=fecha
-        )
-    if rets_porc_daspu.exists():
-        r = rets_porc_daspu.order_by('hasta')[rets_porc_daspu.count()-1]
-
-        daspu_objs = RetencionDaspu.objects.filter(
-            retencion=r,
-            )
-        if not daspu_objs.exists():
-            context["error_msg"] = "No existe informacion sobre afiliaciones para DASPU.\n"
-        else:
-            daspu_obj = daspu_objs[daspu_objs.count()-1]
-            p = daspu_obj.retencion.porcentaje # 3%
-            p_min = daspu_obj.porcentaje_minimo # 8%
-
-            # Corroborar si no cubre el minimo de del cargo ayudante D.S.E. sin antiguedad.
-            basicos = SalarioBasicoUniv.objects.filter(
-                cargo=daspu_obj.cargo_referencia,
-                vigencia__desde__lte=fecha,
-                vigencia__hasta__gte=fecha
-                )
-            if not basicos.exists():
-                context['error_msg']='No se encuentra la información salarial requerida para el cálculo.'
-            else:
-                basico = basicos.order_by('vigencia__hasta')[basicos.count()-1]
-                basico = basico.valor
-                daspu_importe += remunerativo * p / 100.0
-                tope_min = basico * p_min / 100.0
-            
-                daspu_context['daspu_importe'] = daspu_importe                
-            
-                if daspu_importe < tope_min:
-                    daspu_extra = tope_min - daspu_importe
-                    daspu_context['daspu_extra'] = daspu_extra
-                    daspu_context['daspu_importe'] = tope_min
-                    daspu_importe = tope_min
-
-                daspu_context['daspu'] = daspu_obj
+    if (total_bonificable_pu != 0): #Esta condicion se da en caso de haber 1 o mas preuniv forms
+        bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, 'P')
+        if (has_doctorado): 
+            bonif_doctorado = total_bonificable_pu * bonif / 100
+            form_bonif = {
+            'bonif_doctorado_pu': bonif_doctorado
+            }
+            total_bonificaciones += bonif_doctorado
+        elif (has_master):    
+            bonif_master = total_bonificable_pu * bonif / 100
+            form_bonif = {
+            'bonif_master_pu': bonif_master
+            }
+            total_bonificaciones += bonif_master
+        elif (has_especialista):
+            bonif_especialista = total_bonificable_pu * bonif / 100
+            form_bonif = {
+            'bonif_especialista_pu': bonif_especialista
+            }
+            total_bonificaciones += bonif_especialista
+    
+    rem_porc_persona.append(form_bonif)
         
-    return daspu_context
-
-
-
-def filter_doc_masters_from_rem_porcentuales(rem_porcentuales, has_doctorado, has_master, has_especialista, aplicacion):
-    """Elimina las remuneraciones porcentuales asociadas a titulos adicionales segun
-    lo que haya especificado el usuario."""
-
-    m_code = ""
-    d_code = ""
-
-    if aplicacion == 'U':
-        m_code = master_code
-        d_code = doc_code
-        e_code = esp_code
-    elif aplicacion == 'P':
-        m_code = master_preuniv_code
-        d_code = doc_preuniv_code
-        e_code = esp_preuniv_code
-
-    if has_doctorado:
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=m_code)
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=e_code)
-    elif has_master:
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=d_code)
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=e_code)
-    elif has_especialista:
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=d_code)
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=m_code)
-    else:
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=d_code)
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=m_code)
-        rem_porcentuales = rem_porcentuales.exclude(remuneracion__codigo=e_code)
-
-    return rem_porcentuales
+    #Retenciones porcentuales
+    datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)            
+    form_ret_porc = {
+            'retenciones_porcentuales': datos_desc_porc['ret_porc_calculadas'],
+            'total_ret_porc' : datos_desc_porc['total_ret_porc']
+            }
+    ret_porc_persona.append(form_ret_porc)
+    
+    #retenciones fijas
+    datos_desc = get_retenciones_fijas(fecha)    
+    form_ret = {
+            'retenciones_fijas': datos_desc['ret_fijas'],
+            'total_ret_fijas': datos_desc['total_ret_fijas']
+            }
+    ret_fijas_persona.append(form_ret)
+    
+    total_ret = datos_desc_porc['total_ret_porc'] + datos_desc['total_ret_fijas']
+    total_neto = total_rem + total_no_rem - total_ret
+    
+    context['total_rem'] = total_rem
+    context['total_no_rem'] = total_no_rem
+    context['total_ret'] = total_ret
+    context['total_neto'] = total_neto
+    #context['total_bonificable'] = total_bonificable    
+    context['ret_fijas_persona'] = ret_fijas_persona
+    context['ret_porc_persona'] = ret_porc_persona
+    context['rem_fijas_persona'] = rem_fijas_persona
+    context['rem_porc_persona'] = rem_porc_persona
+    
+    pp.pprint(ret_fijas_persona)
+    pp.pprint(ret_porc_persona)
+    pp.pprint(rem_fijas_persona)
+    pp.pprint(rem_porc_persona)
+    
+    return context    
 
 # Retorna el porcentaje de aumento en base a la antiguedad
 def get_antiguedad(antig, fecha, aplicacion):    
@@ -448,28 +449,55 @@ def get_retenciones_porcentuales(fecha, remunerativo, es_afiliado):
     return result
 
 #Obtiene las bonificaciones por titulo
-def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista):
+def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, tipo_cargo):
     bonificaciones = list()
+    bonificaciones_porcentajes = list()
     result = {}
+    porcentaje_bonif = 0.0
     
-    if(has_doctorado):
-        opcion = u'Doctorado'
-    elif(has_master):
-        opcion = u'Maestría'
-    else:
-        opcion = u'Especialización'
-        
-    bonificaciones = Bonificacion.objects.filter(
-            vigencia__desde__lte=fecha,
-            vigencia__hasta__gte=fecha,
-            tipo_bonificacion = opcion
-        )
-    if bonificaciones.exist():
-        for bonif in bonificaciones:
-            result['opcion'] = opcion
-            result['bonificacion']= bonif.porcentaje
-    
-    return result
+    #Para cargos universitarios
+    if(tipo_cargo == "U"):        
+        if(has_doctorado):
+           bonificacion = Bonificacion.objects.filter(
+                   desde__lte=fecha,
+                   hasta__gte=fecha,
+                   ref = u'AdicDoctorado'
+                   )
+        elif(has_master):
+           bonificacion = Bonificacion.objects.filter(
+                   desde__lte=fecha,
+                   hasta__gte=fecha,
+                   ref = u'AdicMaestria'
+                   )
+        else:
+           bonificacion = Bonificacion.objects.filter(
+                   desde__lte=fecha,
+                   hasta__gte=fecha,
+                   ref = u'AdicEspecializacion'
+                   )      
+    elif(tipo_cargo == "P"):
+        if(has_doctorado):
+           bonificacion = Bonificacion.objects.filter(
+                   desde__lte=fecha,
+                   hasta__gte=fecha,
+                   ref = u'AdicDoctoradoPU'
+                   )
+        elif(has_master):
+           bonificacion = Bonificacion.objects.filter(
+                   desde__lte=fecha,
+                   hasta__gte=fecha,
+                   ref = u'AdicMaestriaPU'
+                   )
+        else:
+           bonificacion = Bonificacion.objects.filter(
+                   desde__lte=fecha,
+                   hasta__gte=fecha,
+                   ref = u'AdicEspecializacionPU'
+                   )           
+        if bonificacion.exists():            
+            porcentaje_bonif = bonificacion[0].porcentaje     
+            
+    return porcentaje_bonif
 
 def processUnivFormSet(commonform, univformset):
     """Procesa un formset con formularios de cargos universitarios. Retorna un context"""
@@ -498,20 +526,16 @@ def processUnivFormSet(commonform, univformset):
     horas = 0
 
     for univform in univformset:
-
         # No analizamos los forms que fueron borrados por el usuario.
         if univform in univformset.deleted_forms:
             continue
-
         # Obtengo el cargo
         cargo_obj = univform.cleaned_data['cargo']
-
         ###### Obtengo todo lo necesario en un dict.
         datos = get_data(cargo_obj, fecha, antig, horas, 'U')
         if datos.has_key('error_msg'):
             context['error_msg'] = datos['error_msg']
             return context
-
         #Remuneracion total para ese cargo
         total_rem_cargo = datos['remunerativo'] + datos['no_remunerativo']
 
@@ -536,46 +560,7 @@ def processUnivFormSet(commonform, univformset):
         total_no_rem += datos['no_remunerativo']
         total_remuneraciones += total_rem_cargo
         total_bonificable += datos['bonificable']
-        
-    '''
-    #Bonificaciones
-    if (has_doctorado):    
-        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_doctorado = total_bonificable * datos_bonif['bonificacion'] / 100        
-    if (has_master):    
-        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_master = total_bonificable * datos_bonif['bonificacion'] / 100
-    if (has_especialista):    
-        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_especialista = total_bonificable * datos_bonif['bonificacion'] / 100
-   
-    form_bonif = {
-            'bonif_doctorado': bonif_doctorado,
-            'bonif_master': bonif_master,
-            'bonif_especialista': bonif_especialista,
-            }
-    lista_res.append(form_bonif)
-            
-    #Calculo los retenciones fijas y las pongo en un form
-    datos_desc = get_retenciones_fijas(fecha)    
-    form_ret = {
-            'descuentos': datos_desc['ret_fijas'],
-            'total_ret_fijas': datos_desc['total_ret_fijas']
-            }
-    lista_res.append(form_ret)
-    
-    #Calculo las retenciones porcentuales y las pongo en un form
-        
-    datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)            
-    form_ret_porc = {
-            'retenciones_porcentuales': datos_desc_porc['ret_porc_calculadas'],
-            'total_ret_porc' : datos_desc_porc['total_ret_porc']
-            }
-    lista_res.append(form_ret_porc)
-            
-    #Total de retenciones
-    total_ret = datos_desc['total_ret_fijas'] + datos_desc_porc['total_ret_porc']
-    '''
+
     #Salario neto
     total_neto = total_rem + total_no_rem - total_ret
     
@@ -589,7 +574,6 @@ def processUnivFormSet(commonform, univformset):
     print("Univ")
     
     pp.pprint (lista_res)
-
 
     return context
 
@@ -621,6 +605,7 @@ def processPreUnivFormSet(commonform, preunivformset):
     total_neto = 0.0
     total_rem_cargo = 0.0
     total_remuneraciones = 0.0
+    total_bonificable = 0.0
 
    
     for preunivform in preunivformset:
@@ -644,6 +629,7 @@ def processPreUnivFormSet(commonform, preunivformset):
         total_rem += datos['remunerativo']
         total_no_rem += datos['no_remunerativo']
         total_remuneraciones += total_rem_cargo
+        total_bonificable += datos['bonificable']
 
         # Aqui iran los resultados del calculo para este cargo en particular.
         form_res = {
@@ -660,47 +646,6 @@ def processPreUnivFormSet(commonform, preunivformset):
             'anios': datos['anios']
         }
         lista_res.append(form_res)
-    '''    
-        #Bonificaciones
-    if (has_doctorado):    
-        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_doctorado = total_bonificable * datos_bonif['bonificacion'] / 100        
-    if (has_master):    
-        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_master = total_bonificable * datos_bonif['bonificacion'] / 100
-    if (has_especialista):    
-        datos_bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista)
-        bonif_especialista = total_bonificable * datos_bonif['bonificacion']
-   
-    form_bonif = {
-            'bonif_doctorado': bonif_doctorado,
-            'bonif_master': bonif_master,
-            'bonif_especialista': bonif_especialista,
-        }
-    lista_res.append(form_bonif)    
-    
-    
-    #Calculo los retenciones fijas y las pongo en un form
-    datos_desc = get_retenciones_fijas(fecha)    
-    form_ret = {
-            'descuentos': datos_desc['ret_fijas'],
-            'total_ret_fijas': datos_desc['total_ret_fijas']
-            }
-    lista_res.append(form_ret)
-    
-    
-    #Calculo las retenciones porcentuales y las pongo en un form
-    datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)    
-        
-    form_ret_porc = {
-            'retenciones_porcentuales': datos_desc_porc['ret_porc_calculadas'],
-            'total_ret_porc' : datos_desc_porc['total_ret_porc']
-            }
-    lista_res.append(form_ret_porc)
-    
-    #Total de retenciones
-    total_ret = datos_desc['total_ret_fijas'] + datos_desc_porc['total_ret_porc']
-    '''
     
     #Salario neto
     total_neto = total_rem + total_no_rem - total_ret
@@ -709,138 +654,11 @@ def processPreUnivFormSet(commonform, preunivformset):
     context['total_no_rem'] = total_no_rem
     context['total_ret'] = total_ret
     context['total_neto'] = total_neto
+    context['total_bonificable'] = total_bonificable 
     context['lista_res'] = lista_res
 
     print ("Preuniv")
     pp.pprint (lista_res)
 
-
     return context
 
-
-def ganancias(request):
-#def ganancias(anio, cargo, antig, doct, master, afiliado):
-    context = {}
-    if request.method == 'POST':
-        rem1, rem2 = 0.0 , 0.0
-        desc1, desc2 = 0.0, 0.0
-        descuentos = 0.19
-
-        commonform = CommonForm(request.POST)
-        ganancias_form = ImpuestoGananciasForm(request.POST)
-        cargo_univ = CargoUnivForm(request.POST)
-
-        if commonform.is_valid() and ganancias_form.is_valid() and cargo_univ.is_valid():
-            anio = int(commonform.cleaned_data['anio'])
-            cargo = cargo_univ.cleaned_data['cargo']
-            antig = commonform.cleaned_data['antiguedad']
-            doct = commonform.cleaned_data['doctorado']
-            master = commonform.cleaned_data['master']
-            afiliado = commonform.cleaned_data['afiliado']
-            caja_compl = float(commonform.cleaned_data['caja_compl'])/100.
-
-            descuentos += .015 if afiliado else 0.0
-            descuentos += caja_compl
-            # Calculo el neto anual.
-            for mes in range(1,7):
-                fecha = datetime.date(anio, mes, 10)
-                datos = get_data(cargo, fecha, antig, doct, master, afiliado)
-                rem1 += datos['remunerativo']
-                desc1 += datos['remunerativo'] * descuentos
-            sac1 = (rem1/6.0)/2.0
-            desc1 += sac1 * descuentos
-            rem1 += sac1
-            for mes in range (7, 13):
-                fecha = datetime.date(anio, mes, 10)
-                datos = get_data(cargo, fecha, antig, doct, master, afiliado)
-                rem2 += datos['remunerativo']
-                desc2 += datos['remunerativo'] * descuentos
-            sac2 = (rem2/6.0)/2.0
-            desc2 += sac2 * descuentos
-            rem2 += sac2
-
-            neto_anual = rem1 + rem2 - desc1 - desc2
-
-            context['neto_anual'] = neto_anual
-            context['cargo'] = cargo
-            context['anio'] = anio
-
-            # Empiezo a descontar.
-            lista_deduc = list()
-            deducciones_total = 0.0
-            conyuge = int(ganancias_form.cleaned_data['conyuge']) == 1
-            nro_hijos = int(ganancias_form.cleaned_data['nro_hijos_menores_24'])
-            nro_desc = int(ganancias_form.cleaned_data['nro_descendientes'])
-            nro_asc = int(ganancias_form.cleaned_data['nro_ascendientes'])
-            nro_suegros = int(ganancias_form.cleaned_data['nro_suegros_yernos_nueras'])
-            otras_deduc = int(ganancias_form.cleaned_data['otros_descuentos'])
-
-            deducciones = ImpuestoGananciasDeducciones.objects.filter(
-                            vigencia__desde__lte=fecha,
-                            vigencia__hasta__gte=fecha
-                        )
-            if not deducciones.exists():
-                context['error_msg'] = u'No se encontró información para el año solicitado.'
-                return context
-            else:
-                deducciones = deducciones[0]
-            if deducciones.ganancia_no_imponible > 0.0:
-                lista_deduc.append((u'Mínimo no imponible', deducciones.ganancia_no_imponible))
-                deducciones_total += deducciones.ganancia_no_imponible
-            if deducciones.desc_cuarta_cat > 0.0:
-                lista_deduc.append((u'Descuento 4ta categoría', deducciones.desc_cuarta_cat))
-                deducciones_total += deducciones.desc_cuarta_cat
-            if conyuge:
-                lista_deduc.append((u'Descuento por cónyuge', deducciones.por_conyuge))
-                deducciones_total += deducciones.por_conyuge
-            if nro_hijos > 0:
-                lista_deduc.append((u'Descuento por hijo (*' + str(nro_hijos) + u')', deducciones.por_hijo*nro_hijos))
-                deducciones_total += deducciones.por_hijo*nro_hijos
-            if nro_desc > 0:
-                lista_deduc.append((u'Descuento por descendiente (*' + str(nro_desc) + u')', deducciones.por_descendiente*nro_desc))
-                deducciones_total += deducciones.por_descendiente*nro_desc
-            if nro_asc > 0:
-                lista_deduc.append((u'Descuento por ascendiente (*' + str(nro_asc) + u')', deducciones.por_ascendiente*nro_asc))
-                deducciones_total += deducciones.por_ascendiente*nro_asc
-            if nro_suegros > 0:
-                lista_deduc.append((u'Descuento por suegro, yerno o nuera (*' + str(nro_suegros) + u')', deducciones.por_suegro_yerno_nuera*nro_suegros))
-                deducciones_total += deducciones.por_suegro_yerno_nuera*nro_suegros
-            if otras_deduc > 0:
-                lista_deduc.append((u'Otras deducciones', otras_deduc))
-                deducciones_total += otras_deduc
-            context['lista_deduc'] = lista_deduc
-            context['total_deduc'] = deducciones_total
-            # Ingreso neto sujeto a impuestos.
-            insai = neto_anual - deducciones_total
-            context['insai'] = insai if insai > 0.0 else 0.0
-            print context['insai'], neto_anual, deducciones_total
-            if insai > 0.0:
-                tabla = ImpuestoGananciasTabla.objects.filter(
-                            vigencia__desde__lte=fecha,
-                            vigencia__hasta__gte=fecha,
-                            ganancia_neta_min__lte=insai,
-                            ganancia_neta_max__gte=insai
-                        )
-                if not tabla.exists():
-                    context['error_msg'] = u'No se encontró información para el año solicitado.'
-                    return context
-                else:
-                    tabla = tabla[0]
-                impuesto = tabla.suma_anterior + (insai - tabla.ganancia_neta_min)*tabla.impuesto_porcentual
-            else:
-                impuesto = 0.0
-            context['impuesto'] = impuesto
-            context['mensual'] = impuesto/13.0
-            return render_to_response('ganancias_calculated.html', context)
-        else:
-            context['commonform'] = commonform
-            context['univform'] = cargo_univ
-            context['gananciasform'] = ganancias_form
-    else:
-        commonform = CommonForm()
-        ganancias_form = ImpuestoGananciasForm()
-        cargo_univ = CargoUnivForm()
-        context['commonform'] = commonform
-        context['univform'] = cargo_univ
-        context['gananciasform'] = ganancias_form
-    return render_to_response('ganancias.html', context)
