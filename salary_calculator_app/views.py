@@ -109,7 +109,6 @@ def calculate(request):
             context_univ = processUnivFormSet(commonform, univformset)
             context_preuniv = processPreUnivFormSet(commonform, preunivformset)
             
-
             # Control de errores
             if context_univ.has_key('error_msg'):
                 context['error_msg'] = context_univ['error_msg']
@@ -451,7 +450,7 @@ def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, tipo_
            bonificaciones = Bonificacion.objects.filter(
                    desde__lte=fecha,
                    hasta__gte=fecha,
-                   ref = u'AdicEspecializacion'
+                   ref = u'AdicEspec'
                    )
         if(bonificaciones.exists()):
             for bonif in bonificaciones:
@@ -477,7 +476,7 @@ def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, tipo_
            bonificaciones = Bonificacion.objects.filter(
                    desde__lte=fecha,
                    hasta__gte=fecha,
-                   ref = u'AdicEspecializacionPU'
+                   ref = u'AdicEspecPU'
                    )           
         if(bonificaciones.exists()):
             for bonif in bonificaciones:
