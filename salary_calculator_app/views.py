@@ -187,11 +187,12 @@ def calculateRemRetPorPersona(context, afiliacion_adiuc, commonform):
     total_neto = context['total_neto']
     total_bonificable_u = context['total_bonificable_u']
     total_bonificable_pu = context['total_bonificable_pu']
-    bonif_doctorado = 0.0
-    bonif_master = 0.0
-    bonif_especialista = 0.0
-    total_bonificaciones = 0.0
-    form_bonif = {}
+    total_bonificaciones_u = 0.0
+    total_bonificaciones_pu = 0.0
+    form_bonif_u = {}
+    form_bonif_pu = {}
+    bonif_u ={}
+    bonif_pu = {}
     form_ret_porc = {}
     form_ret = {}
     ret_porc_persona = list()
@@ -201,49 +202,24 @@ def calculateRemRetPorPersona(context, afiliacion_adiuc, commonform):
     
     #Bonificaciones
     if (total_bonificable_u != 0): #Esta condicion se da en caso de haber 1 o mas univ forms
-        bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, 'U')
-        if (has_doctorado): 
-            bonif_doctorado = total_bonificable_u * bonif / 100
-            form_bonif = {
-            'bonif_doctorado_u': bonif_doctorado
-            }
-            total_bonificaciones = bonif_doctorado
-        elif (has_master):    
-            bonif_master = total_bonificable_u * bonif / 100
-            form_bonif = {
-            'bonif_master_u': bonif_master
-            }
-            total_bonificaciones = bonif_master
-        elif (has_especialista):
-            bonif_especialista = total_bonificable_u * bonif / 100
-            form_bonif = {
-            'bonif_especialista_u': bonif_especialista
-            }
-            total_bonificaciones = bonif_especialista
-
-    if (total_bonificable_pu != 0): #Esta condicion se da en caso de haber 1 o mas preuniv forms
-        bonif = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, 'P')
-        if (has_doctorado): 
-            bonif_doctorado = total_bonificable_pu * bonif / 100
-            form_bonif = {
-            'bonif_doctorado_pu': bonif_doctorado
-            }
-            total_bonificaciones += bonif_doctorado
-        elif (has_master):    
-            bonif_master = total_bonificable_pu * bonif / 100
-            form_bonif = {
-            'bonif_master_pu': bonif_master
-            }
-            total_bonificaciones += bonif_master
-        elif (has_especialista):
-            bonif_especialista = total_bonificable_pu * bonif / 100
-            form_bonif = {
-            'bonif_especialista_pu': bonif_especialista
-            }
-            total_bonificaciones += bonif_especialista
-    
-    rem_porc_persona.append(form_bonif)
+        bonif_u = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, 'U', total_bonificable_u)
+        pp.pprint(bonif_u)
+        form_bonif_u = {
+        'bonificacion_u': bonif_u['bonificaciones_list'],
+        'total_bonificaciones': bonif_u['total_bonificaciones']
+        }    
+        total_bonificaciones_u = bonif_u['total_bonificaciones']
+        rem_porc_persona.append(form_bonif_u)
         
+    if (total_bonificable_pu != 0): #Esta condicion se da en caso de haber 1 o mas preuniv forms
+        bonif_pu = get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, 'P', total_bonificable_pu)    
+        form_bonif_pu = {
+        'bonificacion_pu': bonif_pu['bonificaciones_list'],
+        'total_bonificaciones': bonif_pu['total_bonificaciones']
+        }            
+        total_bonificaciones_pu = bonif_pu['total_bonificaciones']
+        rem_porc_persona.append(form_bonif_pu)         
+    
     #Retenciones porcentuales
     datos_desc_porc = get_retenciones_porcentuales(fecha, total_rem, es_afiliado)            
     form_ret_porc = {
@@ -261,7 +237,7 @@ def calculateRemRetPorPersona(context, afiliacion_adiuc, commonform):
     ret_fijas_persona.append(form_ret)
     
     total_ret = datos_desc_porc['total_ret_porc'] + datos_desc['total_ret_fijas']
-    total_neto = total_rem + total_no_rem - total_ret
+    total_neto = total_rem + total_no_rem + total_bonificaciones_u + total_bonificaciones_pu - total_ret
     
     context['total_rem'] = total_rem
     context['total_no_rem'] = total_no_rem
@@ -448,56 +424,72 @@ def get_retenciones_porcentuales(fecha, remunerativo, es_afiliado):
     result['total_ret_porc'] = total_ret_porc
     return result
 
-#Obtiene las bonificaciones por titulo
-def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, tipo_cargo):
+#Obtiene las bonificaciones por titulo de posgrado
+def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, tipo_cargo, total_bonificable):
     bonificaciones = list()
-    bonificaciones_porcentajes = list()
+    bonificaciones_list = list()
+    bonif_calculada = 0.0
+    total_bonificaciones = 0.0
     result = {}
     porcentaje_bonif = 0.0
-    
+
     #Para cargos universitarios
-    if(tipo_cargo == "U"):        
+    if(tipo_cargo == "U"):  
         if(has_doctorado):
-           bonificacion = Bonificacion.objects.filter(
+           bonificaciones = Bonificacion.objects.filter(
                    desde__lte=fecha,
                    hasta__gte=fecha,
                    ref = u'AdicDoctorado'
                    )
         elif(has_master):
-           bonificacion = Bonificacion.objects.filter(
+           bonificaciones = Bonificacion.objects.filter(
                    desde__lte=fecha,
                    hasta__gte=fecha,
                    ref = u'AdicMaestria'
                    )
-        else:
-           bonificacion = Bonificacion.objects.filter(
+        elif(has_especialista):
+           bonificaciones = Bonificacion.objects.filter(
                    desde__lte=fecha,
                    hasta__gte=fecha,
                    ref = u'AdicEspecializacion'
-                   )      
+                   )
+        if(bonificaciones.exists()):
+            for bonif in bonificaciones:
+                bonif_calculada = total_bonificable * bonif.porcentaje / 100
+                bonificaciones_list.append((bonif, bonif_calculada))
+                total_bonificaciones += bonif_calculada
+                
+    #Para cargos preuniversitarios
     elif(tipo_cargo == "P"):
         if(has_doctorado):
-           bonificacion = Bonificacion.objects.filter(
+           bonificaciones = Bonificacion.objects.filter(
                    desde__lte=fecha,
                    hasta__gte=fecha,
                    ref = u'AdicDoctoradoPU'
                    )
         elif(has_master):
-           bonificacion = Bonificacion.objects.filter(
+           bonificaciones = Bonificacion.objects.filter(
                    desde__lte=fecha,
                    hasta__gte=fecha,
                    ref = u'AdicMaestriaPU'
                    )
-        else:
-           bonificacion = Bonificacion.objects.filter(
+        elif(has_especialista):
+           bonificaciones = Bonificacion.objects.filter(
                    desde__lte=fecha,
                    hasta__gte=fecha,
                    ref = u'AdicEspecializacionPU'
                    )           
-        if bonificacion.exists():            
-            porcentaje_bonif = bonificacion[0].porcentaje     
-            
-    return porcentaje_bonif
+        if(bonificaciones.exists()):
+            for bonif in bonificaciones:
+                bonif_calculada = total_bonificable * bonif.porcentaje / 100
+                bonificaciones_list.append((bonif, bonif_calculada))
+                total_bonificaciones += bonif_calculada
+
+    result['bonificaciones'] = bonificaciones
+    result['bonificaciones_list'] = bonificaciones_list
+    result['total_bonificaciones'] = total_bonificaciones
+    return result
+    
 
 def processUnivFormSet(commonform, univformset):
     """Procesa un formset con formularios de cargos universitarios. Retorna un context"""

@@ -156,12 +156,26 @@
                     {% endfor %}
                     
                     {% for rem in rem_porc_persona %}
-                        <tr>
-                        <td> {{ rem.codigo }} </td>
-                        <td> {{ rem.nombre }} ({{ rem.porcentaje }}%) </td>
-                        <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
-                        <td></td>
-                        </tr>
+                        {% if rem.bonificacion_u%}
+                            {% for obj,importe in rem.bonificacion_u%}                     
+                                <tr>
+                                <td> {{ obj.codigo }} </td>
+                                <td> {{ obj.nombre }} ({{ obj.porcentaje }}%) </td>
+                                <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
+                                <td></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% if rem.bonificacion_pu%}
+                            {% for obj,importe in rem.bonificacion_pu%}                     
+                                <tr>
+                                <td> {{ obj.codigo }} </td>
+                                <td> {{ obj.nombre }} ({{ obj.porcentaje }}%) </td>
+                                <td class="adicionales"> {{ importe|floatformat:-2 }} </td>
+                                <td></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
                     
                     {% for ret,importe in ret_fijas_persona %}
@@ -179,7 +193,7 @@
                     {% endfor %}
                     
                     {% for ret in ret_porc_persona%}
-                        {% if ret.retenciones_porcentuales%}
+                        <!-- {% if ret.retenciones_porcentuales%} -->
                             {% for obj,importe in ret.retenciones_porcentuales %}
                                 <tr>
                                 <td> {{ obj.codigo }} </td>
@@ -188,7 +202,7 @@
                                 <td class="descuentos"> {{ importe|floatformat:-2 }} </td>
                                 </tr>
                             {% endfor %}
-                        {% endif%}
+                        <!-- {% endif%} -->
                     {% endfor %}
                     
                 </table>
