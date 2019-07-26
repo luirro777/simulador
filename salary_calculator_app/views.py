@@ -387,7 +387,7 @@ def get_retenciones_fijas(fecha):
             desde__lte=fecha,
             hasta__gte=fecha 
             )
-    if ret_fijas.exists():
+    if ret_fijas:
         for ret_fija in ret_fijas:
             fijas += ret_fija.valor   
             
@@ -412,7 +412,7 @@ def get_retenciones_porcentuales(fecha, remunerativo, es_afiliado):
                 desde__lte=fecha,
                 hasta__gte=fecha               
                 ).exclude( nombre = u'ADIUC')
-    if ret_porcentuales.exists():
+    if ret_porcentuales:
         for ret_porc in ret_porcentuales:
             ret_porc_calculada = remunerativo * ret_porc.porcentaje / 100
             ret_porc_calculadas.append((ret_porc, ret_porc_calculada))
@@ -452,7 +452,7 @@ def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, tipo_
                    hasta__gte=fecha,
                    ref = u'AdicEspec'
                    )
-        if(bonificaciones.exists()):
+        if bonificaciones:
             for bonif in bonificaciones:
                 bonif_calculada = total_bonificable * bonif.porcentaje / 100
                 bonificaciones_list.append((bonif, bonif_calculada))
@@ -478,7 +478,7 @@ def get_bonificaciones(fecha, has_doctorado, has_master, has_especialista, tipo_
                    hasta__gte=fecha,
                    ref = u'AdicEspecPU'
                    )           
-        if(bonificaciones.exists()):
+        if bonificaciones:
             for bonif in bonificaciones:
                 bonif_calculada = total_bonificable * bonif.porcentaje / 100
                 bonificaciones_list.append((bonif, bonif_calculada))
