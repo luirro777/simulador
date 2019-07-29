@@ -353,7 +353,10 @@ def get_data(cargo_obj, fecha, antig, horas, aplicacion):
             if (rem_fija.remuneracion.bonificable):
                 bonificable += rem_fija.valor
                 
-            rem_list.append( (rem_fija, rem_fija.valor))
+            if (cargo_obj.pago_por_hora):
+                rem_list.append( (rem_fija, rem_fija.valor*horas))
+            else:
+                rem_list.append( (rem_fija, rem_fija.valor))
     
     
     #Procedo al calculo de la antiguedad
